@@ -1,9 +1,5 @@
-# WebGi Camera Landing Page
+# WebGi Jewelry Landing Page
 A template for buildind scrollable landing pages with Gsap, ScrollTrigger and webgi engine in typescript using parcel bundler.
-
-###Live link: https://camera-webgi.vercel.app/
-
-<a href="https://camera-webgi.vercel.app/" target="_blank"><img src="assets/images/canon_threejs_webgi.jpg" width="100%" /></a>
 
 In <a href="https://www.youtube.com/watch?v=pN3bxj3Iep8" target="_blank">this video</a>, you can watch the design process of this page, using WEBGi. Using the scroll to tell stories is something very pleasant and simple to do with tools like WEBGI. It uses a <strong>modified version of Threejs</strong> to allow advanced effects rendering with good performance and ease of use.
 
