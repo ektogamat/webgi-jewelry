@@ -31,7 +31,6 @@ body {
 	overflow-x: hidden;
 	overflow-y: hidden;
 	font-family: $archivo;
-	letter-spacing: -0.5px;
 	scroll-behavior: smooth;
 	color: $text;
 }
@@ -293,47 +292,39 @@ table {
 	align-items: center;
 	justify-content: flex-end;
 	width: 80%;
-}
-
-.forever--content{
-	width: 320px;
-	position: absolute;
-	margin-right: 10%;
-	opacity: 0;
-}
-
-.forever--content p{
-	line-height: 22px;
-}
-
-.forever--container.fixed{
-	position: fixed;
-	top: 50%
-}
-
-.forever--content > h1{
-	position: relative;
-	left: -4px;
-	font-style: normal;
-	font-weight: 700;
-	font-size: 85px;
-	line-height: 55px;
-	letter-spacing: -0.01em;
-	color: #be1921;
-	margin-bottom: 60px;
-	word-break: break-all;
-}
-
-.forever--content > h2 {
-	margin-bottom: 16px;
-	font-weight: 500;
-	font-size: 17px;
-}
-
-.forever--content > img{
-	margin-top: 32px;
-	margin-bottom: 32px;
-	border-radius: 10px;
+	&.fixed{
+		position: fixed;
+		top: 50%
+	}
+	.forever--content{
+		width: 320px;
+		position: absolute;
+		margin-right: 10%;
+		opacity: 0;
+		h1{
+			position: relative;
+			left: -4px;
+			font-family: $playfair;
+			font-weight: 400;
+			font-size: rem(124);
+			line-height: 69%;
+			letter-spacing: -0.04em;
+			margin-bottom: 40px;
+		}
+		h2 {
+			margin-bottom: 0;
+			font-weight: 400;
+			font-family: $qwitcher;
+			font-size: rem(56);
+			line-height: 100%;
+			letter-spacing: -0.04em;
+		}
+		p{
+			font-weight: 200;
+			font-size: rem(13);
+			line-height: 180%;
+		}
+	}
 }
 
 /* POWER SECTION */
