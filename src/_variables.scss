@@ -1,0 +1,17 @@
+//Fonts
+$archivo: 'Archivo', sans-serif;
+$playfair: 'Playfair Display SC', serif;
+$qwitcher: 'Qwitcher Grypen', cursive;
+
+//Colors
+$white: #ffffff;
+$black: #000000;
+$salmon: #E6BFBE;
+$text: #52322B;
+$hover: #BB4C33;
+
+// Pixels X REM
+$browser-context: 16;
+@function rem($pixels, $context: $browser-context) {
+	@return #{calc($pixels / $context)}rem;
+}

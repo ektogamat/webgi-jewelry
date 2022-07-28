@@ -14,7 +14,7 @@ import {
 } from "webgi"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import "./styles.css"
+import "./styles.scss"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -135,7 +135,7 @@ async function setupViewer(){
         .fromTo(target, {x: 3.16, y: -0.13, z: 0.51}, {x: isMobile ? -0.1 : 0.86, y: -0.13, z: 0.51, duration: 4, onUpdate}, '-=4')
         .fromTo('.header--container', {opacity: 0, y: '-100%'}, {opacity: 1, y: '0%', ease: "power1.inOut", duration: 0.8}, '-=1')
         .fromTo('.hero--scroller', {opacity: 0, y: '150%'}, {opacity: 1, y: '0%', ease: "power4.inOut", duration: 1}, '-=1')
-        .fromTo('.hero--content', {opacity: 0, x: '-50%'}, {opacity: 1, x: '0%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
+        .fromTo('.hero--content', {opacity: 0, x: '100%'}, {opacity: 1, x: '50%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
     }
 
     function setupScrollAnimation(){

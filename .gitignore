@@ -1,0 +1,38 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+.com.apple.timemachine.supported
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Folders with CMS-generated content
+dist/
+
+# itens que não pode ser comitados
+*.map
+*.vscode
+.editorconfig
+.cache
+node_modules/*
+
+# Others
+*.sql
+
+# Workspace
+*.code-workspace
+.vscode/sftp.json
+.history/
