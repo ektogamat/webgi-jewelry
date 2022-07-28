@@ -161,10 +161,10 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: false, pin: '.hero--content',
         }}).addLabel("start")
 
-        .fromTo('.performance--content', {opacity: 0, x: '110%'}, {opacity: 1, x: '0%', ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.performance--container',
+        .fromTo('.forever--content', {opacity: 0, x: '110%'}, {opacity: 1, x: '0%', ease: "power4.out",
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.forever--container',
         }})
-        .addLabel("Performance")
+        .addLabel("Forever")
 
         // // POWER SECTION
         .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -3.7,
@@ -174,7 +174,7 @@ async function setupViewer(){
         .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : -0.52, z: 0.61,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
-        .to('.performance--content', {autoAlpha: 0, ease: "power4.out",
+        .to('.forever--content', {autoAlpha: 0, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top center', scrub: 1, immediateRender: false,
         }})
         .fromTo('.power--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: '0%', ease: "power4.out",

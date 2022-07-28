@@ -286,49 +286,32 @@ table {
 }
 
 
-
-@keyframes bounce {
-	0%, 20%, 50%, 80%, 100% {
-		transform: translateY(0);
-	}
-	40% {
-		transform: translateY(-15px);
-	}
-	60% {
-		transform: translateY(-5px);
-	}
-}
-
-
-
-
-
 /* PERFORMANCE SECTION */
 
-.performance--container{
+.forever--container{
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
 	width: 80%;
 }
 
-.performance--content{
+.forever--content{
 	width: 320px;
 	position: absolute;
 	margin-right: 10%;
 	opacity: 0;
 }
 
-.performance--content p{
+.forever--content p{
 	line-height: 22px;
 }
 
-.performance--container.fixed{
+.forever--container.fixed{
 	position: fixed;
 	top: 50%
 }
 
-.performance--content > h1{
+.forever--content > h1{
 	position: relative;
 	left: -4px;
 	font-style: normal;
@@ -341,13 +324,13 @@ table {
 	word-break: break-all;
 }
 
-.performance--content > h2 {
+.forever--content > h2 {
 	margin-bottom: 16px;
 	font-weight: 500;
 	font-size: 17px;
 }
 
-.performance--content > img{
+.forever--content > img{
 	margin-top: 32px;
 	margin-bottom: 32px;
 	border-radius: 10px;
