@@ -10,6 +10,8 @@ import {
     SSAOPlugin,
     GroundPlugin,
     FrameFadePlugin,
+    DiamondPlugin,
+    DepthOfFieldPlugin,
     BloomPlugin, TemporalAAPlugin, RandomizedDirectionalLightPlugin, AssetImporter,
 } from "webgi"
 import gsap from "gsap"
@@ -18,26 +20,26 @@ import "./styles.scss"
 
 gsap.registerPlugin(ScrollTrigger)
 
-const lensObjectNames = [
-    'Circle002',
-    '+Sphere001001',
-    'new',
-    '+Plane008001',
-    '+SideButtons001',
-    'Rings2001',
-    '+Rings1001',
-    '+Circle003001',
-    '+Sphere003001',
-    '+Circle001001',
-    'Text001',
-    'Plane006001',
-    '+Plane005001',
-    '+Sphere001',
-    '+Cylinder001',
-    '+BODY044001',
-]
+// const lensObjectNames = [
+//     'Circle002',
+//     '+Sphere001001',
+//     'new',
+//     '+Plane008001',
+//     '+SideButtons001',
+//     'Rings2001',
+//     '+Rings1001',
+//     '+Circle003001',
+//     '+Sphere003001',
+//     '+Circle001001',
+//     'Text001',
+//     'Plane006001',
+//     '+Plane005001',
+//     '+Sphere001',
+//     '+Cylinder001',
+//     '+BODY044001',
+// ]
 
-let lensComponentsPosition = { x: 0 }
+// let lensComponentsPosition = { x: 0 }
 
 async function setupViewer(){
 
@@ -76,6 +78,8 @@ async function setupViewer(){
     await viewer.addPlugin(GroundPlugin)
     const bloom = await viewer.addPlugin(BloomPlugin)
     await viewer.addPlugin(TemporalAAPlugin)
+    await viewer.addPlugin(DiamondPlugin)
+    await viewer.addPlugin(DepthOfFieldPlugin)
     await viewer.addPlugin(RandomizedDirectionalLightPlugin, false)
 
     ssr!.passes.ssr.passObject.lowQualityFrames = 0
@@ -103,16 +107,16 @@ async function setupViewer(){
     viewer.renderer.refreshPipeline()
 
     // WEBGi load model
-    await manager.addFromPath("./assets/camera.glb")
+    await manager.addFromPath("./assets/ring_webgi.glb")
 
-    const lensObjects: any[] = []
-    for (const obj of lensObjectNames) {
-        const o = viewer.scene.findObjectsByName(obj)[0]
-        o.userData.__startPos = o.position.z
-        o.userData.__deltaPos = -Math.pow(Math.abs(o.position.z)*1.5, 1.25)
+    // const lensObjects: any[] = []
+    // for (const obj of lensObjectNames) {
+    //     const o = viewer.scene.findObjectsByName(obj)[0]
+    //     o.userData.__startPos = o.position.z
+    //     o.userData.__deltaPos = -Math.pow(Math.abs(o.position.z)*1.5, 1.25)
 
-        lensObjects.push(o)
-    }
+    //     lensObjects.push(o)
+    // }
 
     if(camera.controls) camera.controls.enabled = false
 
@@ -230,9 +234,9 @@ async function setupViewer(){
         .to(target, {x: isMobile ? -0.1 : -0.9, y: -0.17, z: 0.1,
             scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
-        .to(lensComponentsPosition,{x: 0,
-            scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
-        })
+        // .to(lensComponentsPosition,{x: 0,
+        //     scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
+        // })
         .fromTo('.explore--content', {opacity: 0, x: '130%'}, {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-5", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
         }})
@@ -313,31 +317,29 @@ async function setupViewer(){
         //.to(position,{x: -0.3, y: -0.3, z: -4.85, duration: 1.2, ease: "power4.out", onUpdate})
         //.to(target, {x: -0.9, y: -0.17, z: 0.1, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
         .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
-        setLensAppearance(true)
-        lensOnly = false
     }
 
     // VIEW BODY EVENT
-    let lensOnly = false
-    bodyButton.addEventListener('click', () => {
-        if(lensOnly){
-            setLensAppearance(true)
-            lensOnly = false
-            bodyButton.innerHTML = "view body only"
-        } else{
-            setLensAppearance(false)
-            lensOnly = true
-            bodyButton.innerHTML = "view with lens"
-        }
-    })
+    // let lensOnly = false
+    // bodyButton.addEventListener('click', () => {
+    //     if(lensOnly){
+    //         setLensAppearance(true)
+    //         lensOnly = false
+    //         bodyButton.innerHTML = "view body only"
+    //     } else{
+    //         setLensAppearance(false)
+    //         lensOnly = true
+    //         bodyButton.innerHTML = "view with lens"
+    //     }
+    // })
 
 
-    function setLensAppearance(_value: boolean){
-        for (const o of lensObjects) {
-            o.visible = _value
-        }
-        viewer.scene.setDirty({sceneUpdate: true})
-    }
+    // function setLensAppearance(_value: boolean){
+    //     for (const o of lensObjects) {
+    //         o.visible = _value
+    //     }
+    //     viewer.scene.setDirty({sceneUpdate: true})
+    // }
 }
 
 setupViewer()
