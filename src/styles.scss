@@ -272,6 +272,9 @@ table {
 			letter-spacing: normal;
 			margin-bottom: 8px;
 			transition: all 0.8s ease-in-out;
+			@media (max-width: 600px) {
+				display: none;
+			}
 		}
 		.bounce {
 			-moz-animation: bounce 2s infinite;

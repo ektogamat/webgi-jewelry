@@ -39,7 +39,7 @@ async function setupViewer(){
     const target = camera.target
     
     // Interface Elements
-    const exploreView = document.querySelector('.cam-view-4') as HTMLElement
+    const exploreView = document.querySelector('.cam-view-3') as HTMLElement
     const canvasView = document.getElementById('webgi-canvas') as HTMLElement
     const canvasContainer = document.getElementById('webgi-canvas-container') as HTMLElement
     const exitContainer = document.querySelector('.exit--container') as HTMLElement    
@@ -170,7 +170,7 @@ async function setupViewer(){
         .addLabel("Power")*/
 
 
-        // // AUTOFOCUS SECTION
+        // // EMOTIONS SECTION
         /*.to(position,{x: -5.5, y: 1.7, z: 5,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
@@ -200,7 +200,7 @@ async function setupViewer(){
         .addLabel("Emotions")
 
         // EXPLORE SECTION
-        .to(position,{x: -0.01, y: -4.8, z: 0.2,
+        /*.to(position,{x: -0.01, y: -4.8, z: 0.2,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
@@ -216,7 +216,7 @@ async function setupViewer(){
         .fromTo('.explore--content', {opacity: 0, x: '130%'}, {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-4", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
         }})
-        .addLabel("Explore")
+        .addLabel("Explore")*/
 
     }
 
@@ -234,13 +234,13 @@ async function setupViewer(){
     })
 
     // KNOW MORE EVENT
-    document.querySelector('.button-know-more')?.addEventListener('click', () => {
+    document.querySelector('.button-scroll')?.addEventListener('click', () => {
         const element = document.querySelector('.cam-view-2')
         window.scrollTo({top: element?.getBoundingClientRect().top, left: 0, behavior: 'smooth'})
     })
 
     // EXPLORE ALL FEATURES EVENT
-    document.querySelector('.button-explore')?.addEventListener('click', () => {
+    document.querySelector('.btn-customize')?.addEventListener('click', () => {
         exploreView.setAttribute("style", "pointer-events: none")
         canvasView.setAttribute("style", "pointer-events: all")
         canvasContainer.setAttribute("style", "z-index: 1")
@@ -282,7 +282,7 @@ async function setupViewer(){
 
         tlExit.to(position,{x: -0.3, y: -0.3, z: -4.85, duration: 1.2, ease: "power4.out", onUpdate})
         .to(target, {x: -0.9, y: -0.17, z: 0.1, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
-        .to('.explore--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
+        .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
     }
 
 }
