@@ -150,37 +150,10 @@ async function setupViewer(){
         .addLabel("Forever")
         
 
-        // // POWER SECTION
-        /*.to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -3.7,
-            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
-        }, onUpdate
-        })
-        .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : -0.52, z: 0.61,
-            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
-        })
-        .to('.forever--content', {autoAlpha: 0, ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top center', scrub: 1, immediateRender: false,
-        }})
-        .fromTo('.power--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: '0%', ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: 'top top', scrub: 1, immediateRender: false
-        }})
-        .fromTo('.power--features--img', {opacity: 0, x: '110%'}, {opacity: 1, x: '0%', ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: 'top top', scrub: 1, immediateRender: false
-        }})
-        .addLabel("Power")*/
+        
 
 
         // // EMOTIONS SECTION
-        /*.to(position,{x: -5.5, y: 1.7, z: 5,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
-        }, onUpdate
-        })
-        .to(target, {x: 0.04, y: 0.2, z: 0.6,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
-        })
-        .to(lensComponentsPosition,{x: 1,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
-        })*/
         .to(position,  {x: -0.01, y: -1.16, z: 3.22,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
@@ -198,25 +171,6 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
         }})
         .addLabel("Emotions")
-
-        // EXPLORE SECTION
-        /*.to(position,{x: -0.01, y: -4.8, z: 0.2,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
-        }, onUpdate
-        })
-        .to(target, {x: -0.01, y: 0.78, z: 0.1,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
-        })
-        .to(ring.rotation,{x: 0, y:0, z: 0,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
-        })
-        // .to(lensComponentsPosition,{x: 0,
-        //     scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
-        // })
-        .fromTo('.explore--content', {opacity: 0, x: '130%'}, {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-4", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
-        }})
-        .addLabel("Explore")*/
 
     }
 
