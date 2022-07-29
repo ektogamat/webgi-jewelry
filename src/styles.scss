@@ -87,7 +87,7 @@ table {
 	width: 100%;
 	height: 100%;
 	z-index: 10;
-	background-color: #e1dedf;
+	background-color: $salmon;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
@@ -261,7 +261,7 @@ table {
 	position: absolute;
 	text-align: center;
 	overflow: hidden;
-	
+	z-index: 2;
 	.hero--scroller{
 		opacity: 0;
 		cursor: pointer;

@@ -39,7 +39,7 @@ async function setupViewer(){
     const target = camera.target
     
     // Interface Elements
-    const exploreView = document.querySelector('.cam-view-5') as HTMLElement
+    const exploreView = document.querySelector('.cam-view-4') as HTMLElement
     const canvasView = document.getElementById('webgi-canvas') as HTMLElement
     const canvasContainer = document.getElementById('webgi-canvas-container') as HTMLElement
     const exitContainer = document.querySelector('.exit--container') as HTMLElement    
@@ -182,39 +182,39 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
         })*/
         .to(position,  {x: -0.01, y: -1.16, z: 3.22,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
+            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
         .to(target, {x: 0.02, y: 0.9, z: 0.11,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
         .to(ring.rotation,{x:0, y:0, z: -1,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
         .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-4", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
+            scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
         }})
         .addLabel("Emotions")
 
         // EXPLORE SECTION
         .to(position,{x: -0.01, y: -4.8, z: 0.2,
-            scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
+            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
         .to(target, {x: -0.01, y: 0.78, z: 0.1,
-            scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
         .to(ring.rotation,{x: 0, y:0, z: 0,
-            scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         // .to(lensComponentsPosition,{x: 0,
-        //     scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
+        //     scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
         // })
         .fromTo('.explore--content', {opacity: 0, x: '130%'}, {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-5", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
+            scrollTrigger: { trigger: ".cam-view-4", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
         }})
         .addLabel("Explore")
 
