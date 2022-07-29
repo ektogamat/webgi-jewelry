@@ -143,7 +143,7 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
 
-        .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: '20%', ease: "power4.inOut",
+        .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: isMobile ? '0' : '20%', ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.forever--container',
         }})
         .addLabel("Forever")
