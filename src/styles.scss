@@ -33,6 +33,9 @@ body {
 	font-family: $archivo;
 	scroll-behavior: smooth;
 	color: $text;
+	&::-webkit-scrollbar { 
+		display: none;
+	  }
 }
 
 html {
@@ -287,7 +290,7 @@ table {
 }
 
 
-/* PERFORMANCE SECTION */
+/* FOREVER SECTION */
 
 .forever--container{
 	display: flex;
@@ -347,95 +350,93 @@ table {
 	}
 }
 
-/* POWER SECTION */
+/* EMOTIONS SECTION */
 
-.power--container{
+.emotions--container{
 	display: flex;
-	width: 80%;
-	align-content: flex-end;
-	align-items: flex-start;
-	flex-direction: column;
-	justify-content: flex-end;
-}
-
-.power--content{
-	width: 400px;
-}
-
-.power--content > h1{
-	font-style: normal;
-	font-weight: 700;
-	font-size: 125px;
-	line-height: 55px;
-	letter-spacing: -0.01em;
-	color: #be1921;
-	margin-top: 32px;
-	margin-bottom: 24px;
-}
-
-.power--content > p{
-	line-height: 22px;
-}
-
-.power--img{
-	position: relative;
-	top: -340px;
-}
-
-.power--features--img{
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 10%;
-}
-
-/* AUTOFOCUS SECTION */
-
-.autofocus--container{
-	display: flex;
-	align-content: flex-end;
 	align-items: center;
 	flex-direction: column;
 	justify-content: flex-start;
+	height: 100vh;
+	.emotions--content{
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 80px;
+		h1{
+			font-family: $playfair;
+			font-weight: 400;
+			font-size: rem(114);
+			line-height: 100%;
+			letter-spacing: -0.04em;
+			margin-bottom: 20px;
+		}
+		h2{
+			margin-bottom: -16px;
+			font-weight: 400;
+			font-family: $qwitcher;
+			font-size: rem(56);
+			line-height: 100%;
+			letter-spacing: -0.04em;
+		}
+		p{
+			width: 70%;
+			font-weight: 200;
+			font-size: 13px;
+			line-height: 180%;
+			text-align: center;
+			margin-bottom: 40px;
+		}
+		.btn-customize{
+			background-color: $white;
+			width: 164px;
+			height: 50px;
+			border: 1px solid $text;
+			border-radius: 58px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: space-evenly;
+			font-weight: 200;
+			font-size: rem(15);
+			letter-spacing: -0.04em;;
+			color: $text;
+			padding: 0 10px;
+			cursor: pointer;
+			transition: all 0.8s ease-in-out;
+			svg{
+				path{
+					transition: all 0.8s ease-in-out;
+				}
+			}
+			&:hover{
+				box-shadow: inset 0 0 60px $text;
+				color: $white;
+				transform: translateY(-3px);
+				svg{
+					path{
+						stroke: $white
+					}
+				}
+			}
+		}
+	}
+	.emotions--text-bg{
+		font-weight: 400;
+		font-family: $qwitcher;
+		font-size: rem(533);
+		line-height: 50%;
+		letter-spacing: -0.04em;
+		color: #CB6B56;
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		pointer-events: none;
+	}
 }
 
-.autofocus--content{
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 80px;
-}
-
-.autofocus--content p{
-	width: 70%;
-	text-align: center;
-	line-height: 22px;
-}
-
-.autofocus--content > h1{
-	font-style: normal;
-	font-weight: 100;
-	font-size: 85px;
-	text-align: center;
-	line-height: 55px;
-	letter-spacing: -0.01em;
-	/* margin-top: 32px; */
-	margin-bottom: 24px;
-	width: 100%;
-}
-
-.autofocus--content > h1 strong{
-	font-weight: 700;
-	color: #be1921;
-}
-
-.autofocus--img{
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 10%;
-}
 
 /* EXPLORE SECTION */
 

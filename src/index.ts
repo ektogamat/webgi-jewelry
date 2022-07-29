@@ -174,7 +174,7 @@ async function setupViewer(){
         
 
         // // POWER SECTION
-        .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -3.7,
+        /*.to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -3.7,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
@@ -190,11 +190,11 @@ async function setupViewer(){
         .fromTo('.power--features--img', {opacity: 0, x: '110%'}, {opacity: 1, x: '0%', ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: 'top top', scrub: 1, immediateRender: false
         }})
-        .addLabel("Power")
+        .addLabel("Power")*/
 
 
         // // AUTOFOCUS SECTION
-        .to(position,{x: -5.5, y: 1.7, z: 5,
+        /*.to(position,{x: -5.5, y: 1.7, z: 5,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
@@ -203,11 +203,21 @@ async function setupViewer(){
         })
         .to(lensComponentsPosition,{x: 1,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
+        })*/
+        .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -6.7,
+            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
+        }, onUpdate
         })
-        .fromTo('.autofocus--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
+        .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : -0.52, z: 0.61,
+            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+        })
+        .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
+        }})
+        .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-4", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
         }})
-        .addLabel("Autofocus")
+        .addLabel("Emotions")
 
         // EXPLORE SECTION
         .to(position,{x: -0.3, y: -0.3, z: -4.85,
