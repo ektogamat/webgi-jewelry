@@ -58,7 +58,7 @@ async function setupViewer(){
     const target = camera.target
     
     // Interface Elements
-    const exploreView = document.querySelector('.cam-view-5') as HTMLElement
+    const exploreView = document.querySelector('.cam-view-3') as HTMLElement
     const canvasView = document.getElementById('webgi-canvas') as HTMLElement
     const canvasContainer = document.getElementById('webgi-canvas-container') as HTMLElement
     const exitContainer = document.querySelector('.exit--container') as HTMLElement    
@@ -93,7 +93,7 @@ async function setupViewer(){
 
     importer.addEventListener("onProgress", (ev) => {
         const progressRatio = (ev.loaded / ev.total)
-        document.querySelector('.progress')?.setAttribute('style',`transform: scaleX(${progressRatio})`)
+        document.querySelector('.progress')?.setAttribute('style','transform: scaleX(${progressRatio})')
     })
 
     importer.addEventListener("onLoad", (ev) => {
@@ -147,7 +147,7 @@ async function setupViewer(){
 
         const tl = gsap.timeline({ default: {ease: 'none'}})
 
-        // PERFORMANCE SECTION
+        // FOREVER SECTION
         tl.to(position, {x: 2.5, y: 0.2, z: -6.5,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
@@ -163,11 +163,11 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: false, pin: '.hero--content',
         }}).addLabel("start")
 
-        .to('.forever--text-bg', {opacity: 0.1, ease: "power4.inOut",
+        .to('.forever--text-bg', {opacity: 0.1, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
 
-        .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: '20%', ease: "power4.inOut",
+        .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: '20%', ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.forever--container',
         }})
         .addLabel("Forever")
@@ -193,7 +193,7 @@ async function setupViewer(){
         .addLabel("Power")*/
 
 
-        // // AUTOFOCUS SECTION
+        // // EMOTIONS SECTION
         /*.to(position,{x: -5.5, y: 1.7, z: 5,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
@@ -204,23 +204,26 @@ async function setupViewer(){
         .to(lensComponentsPosition,{x: 1,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
         })*/
-        .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -6.7,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
+        .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -8.7,
+            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
-        .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : -0.52, z: 0.61,
-            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+        .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : 0.52, z: 0.91,
+            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
+        .to('.forever--content', {autoAlpha: 0, ease: "power4.out",
+            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top center', scrub: 1, immediateRender: false,
+        }})
         .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
+            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
         .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-4", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
+            scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
         }})
         .addLabel("Emotions")
 
         // EXPLORE SECTION
-        .to(position,{x: -0.3, y: -0.3, z: -4.85,
+       /* .to(position,{x: -0.3, y: -0.3, z: -4.85,
             scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
@@ -233,17 +236,17 @@ async function setupViewer(){
         .fromTo('.explore--content', {opacity: 0, x: '130%'}, {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-5", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
         }})
-        .addLabel("Explore")
+        .addLabel("Explore")*/
 
     }
 
-    const expandUpdate = ()=> {
+    /*const expandUpdate = ()=> {
         for (const o of lensObjects) {
             o.position.z = o.userData.__startPos + lensComponentsPosition.x * o.userData.__deltaPos
         }
         viewer.setDirty()
         viewer.renderer.resetShadows()
-    }
+    }*/
 
     let needsUpdate = true;
     function onUpdate(){
@@ -259,13 +262,13 @@ async function setupViewer(){
     })
 
     // KNOW MORE EVENT
-    document.querySelector('.button-know-more')?.addEventListener('click', () => {
+    document.querySelector('.button-scroll')?.addEventListener('click', () => {
         const element = document.querySelector('.cam-view-2')
         window.scrollTo({top: element?.getBoundingClientRect().top, left: 0, behavior: 'smooth'})
     })
 
     // EXPLORE ALL FEATURES EVENT
-    document.querySelector('.button-explore')?.addEventListener('click', () => {
+    document.querySelector('.btn-customize')?.addEventListener('click', () => {
         exploreView.setAttribute("style", "pointer-events: none")
         canvasView.setAttribute("style", "pointer-events: all")
         canvasContainer.setAttribute("style", "z-index: 1")
@@ -305,9 +308,11 @@ async function setupViewer(){
 
         const tlExit = gsap.timeline()
 
-        tlExit.to(position,{x: -0.3, y: -0.3, z: -4.85, duration: 1.2, ease: "power4.out", onUpdate})
-        .to(target, {x: -0.9, y: -0.17, z: 0.1, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
-        .to('.explore--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
+        tlExit.to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -8.7, duration: 1.2, ease: "power4.out", onUpdate})
+        .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : 0.52, z: 0.91, onUpdate}, '-=1.2')
+        //.to(position,{x: -0.3, y: -0.3, z: -4.85, duration: 1.2, ease: "power4.out", onUpdate})
+        //.to(target, {x: -0.9, y: -0.17, z: 0.1, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
+        .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
         setLensAppearance(true)
         lensOnly = false
     }
