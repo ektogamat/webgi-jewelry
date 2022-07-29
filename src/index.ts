@@ -20,27 +20,6 @@ import "./styles.scss"
 
 gsap.registerPlugin(ScrollTrigger)
 
-// const lensObjectNames = [
-//     'Circle002',
-//     '+Sphere001001',
-//     'new',
-//     '+Plane008001',
-//     '+SideButtons001',
-//     'Rings2001',
-//     '+Rings1001',
-//     '+Circle003001',
-//     '+Sphere003001',
-//     '+Circle001001',
-//     'Text001',
-//     'Plane006001',
-//     '+Plane005001',
-//     '+Sphere001',
-//     '+Cylinder001',
-//     '+BODY044001',
-// ]
-
-// let lensComponentsPosition = { x: 0 }
-
 async function setupViewer(){
 
     const viewer = new ViewerApp({
@@ -90,8 +69,6 @@ async function setupViewer(){
     const importer = manager.importer as AssetImporter
 
     importer.addEventListener("onStart", (ev) => {
-        target.set(8.16, -0.13, 0.51)
-        position.set(3.6, -0.04,-3.93)
         onUpdate()
     })
 
@@ -109,14 +86,7 @@ async function setupViewer(){
     // WEBGi load model
     await manager.addFromPath("./assets/ring_webgi.glb")
 
-    // const lensObjects: any[] = []
-    // for (const obj of lensObjectNames) {
-    //     const o = viewer.scene.findObjectsByName(obj)[0]
-    //     o.userData.__startPos = o.position.z
-    //     o.userData.__deltaPos = -Math.pow(Math.abs(o.position.z)*1.5, 1.25)
-
-    //     lensObjects.push(o)
-    // }
+    const ring = viewer.scene.findObjectsByName('Scene')[0]
 
     if(camera.controls) camera.controls.enabled = false
 
@@ -135,8 +105,8 @@ async function setupViewer(){
         const introTL = gsap.timeline()
         introTL
         .to('.loader', {x: '150%', duration: 0.8, ease: "power4.inOut", delay: 1})
-        .fromTo(position, {x: -3.6, y: -0.04, z: -3.93}, {x: 3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
-        .fromTo(target, {x: -3.16, y: -0.13, z: 0.21}, {x: isMobile ? -0.1 : -1.86, y: -0.13, z: 0.21, duration: 4, onUpdate}, '-=4')
+        .fromTo(position, {x: 3, y: -0.8, z: 1.2}, {x: 0.5, y: -1.79, z: 4, duration: 4, onUpdate}, '-=0.8')
+        .fromTo(target, {x: 2.5, y: -0.07, z: -0.1}, {x: isMobile ? -0.1 : 1.0, y: 0.3, z: -0.09, duration: 4, onUpdate}, '-=4')
         //.fromTo(position, {x: 3.6, y: -0.04, z: -3.93}, {x: -3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
         //.fromTo(target, {x: 3.16, y: -0.13, z: 0.51}, {x: isMobile ? -0.1 : 0.86, y: -0.13, z: 0.51, duration: 4, onUpdate}, '-=4')
         .fromTo('.header--container', {opacity: 0, y: '-100%'}, {opacity: 1, y: '0%', ease: "power1.inOut", duration: 0.8}, '-=1')
@@ -152,12 +122,15 @@ async function setupViewer(){
         const tl = gsap.timeline({ default: {ease: 'none'}})
 
         // PERFORMANCE SECTION
-        tl.to(position, {x: 2.5, y: 0.2, z: -6.5,
+        tl.to(position, {x: -1.06, y: 0.05, z: 3.41,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
 
-        .to(target,{x: isMobile ? 0.1 : 0.6, y: -0.1, z: 0.9,
-            scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+        .to(target,{x: isMobile ? 0.1 : -0.6, y: -0.1, z: -0.3,
+            scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+        })
+        .to(ring.rotation,{z: 0.9,
+            scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .to('.hero--scroller', {opacity: 0, y: '150%',
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: false, pin: '.hero--scroller--container'
@@ -208,12 +181,15 @@ async function setupViewer(){
         .to(lensComponentsPosition,{x: 1,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
         })*/
-        .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -6.7,
+        .to(position,  {x: -0.01, y: -1.16, z: 3.22,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
-        .to(target, {x: isMobile ? -0.4 : -0.04, y: isMobile ? -3.8 : -0.52, z: 0.61,
+        .to(target, {x: 0.02, y: 0.9, z: 0.11,
             scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+        })
+        .to(ring.rotation,{x:0, y:0, z: -1,
+            scrollTrigger: { trigger: ".cam-view-4",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
@@ -224,12 +200,15 @@ async function setupViewer(){
         .addLabel("Emotions")
 
         // EXPLORE SECTION
-        .to(position,{x: -0.3, y: -0.3, z: -4.85,
+        .to(position,{x: -0.01, y: -4.8, z: 0.2,
             scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
         }, onUpdate
         })
-        .to(target, {x: isMobile ? -0.1 : -0.9, y: -0.17, z: 0.1,
+        .to(target, {x: -0.01, y: 0.78, z: 0.1,
             scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
+        })
+        .to(ring.rotation,{x: 0, y:0, z: 0,
+            scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         // .to(lensComponentsPosition,{x: 0,
         //     scrollTrigger: { trigger: ".cam-view-5",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate: expandUpdate
@@ -240,14 +219,6 @@ async function setupViewer(){
         .addLabel("Explore")
 
     }
-
-    // const expandUpdate = ()=> {
-    //     for (const o of lensObjects) {
-    //         o.position.z = o.userData.__startPos + lensComponentsPosition.x * o.userData.__deltaPos
-    //     }
-    //     viewer.setDirty()
-    //     viewer.renderer.resetShadows()
-    // }
 
     let needsUpdate = true;
     function onUpdate(){
@@ -312,31 +283,8 @@ async function setupViewer(){
         tlExit.to(position,{x: -0.3, y: -0.3, z: -4.85, duration: 1.2, ease: "power4.out", onUpdate})
         .to(target, {x: -0.9, y: -0.17, z: 0.1, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
         .to('.explore--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
-        // setLensAppearance(true)
-        // lensOnly = false
     }
 
-    // VIEW BODY EVENT
-    // let lensOnly = false
-    // bodyButton.addEventListener('click', () => {
-    //     if(lensOnly){
-    //         setLensAppearance(true)
-    //         lensOnly = false
-    //         bodyButton.innerHTML = "view body only"
-    //     } else{
-    //         setLensAppearance(false)
-    //         lensOnly = true
-    //         bodyButton.innerHTML = "view with lens"
-    //     }
-    // })
-
-
-    // function setLensAppearance(_value: boolean){
-    //     for (const o of lensObjects) {
-    //         o.visible = _value
-    //     }
-    //     viewer.scene.setDirty({sceneUpdate: true})
-    // }
 }
 
 setupViewer()
