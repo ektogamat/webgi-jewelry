@@ -131,11 +131,13 @@ async function setupViewer(){
         const introTL = gsap.timeline()
         introTL
         .to('.loader', {x: '150%', duration: 0.8, ease: "power4.inOut", delay: 1})
-        .fromTo(position, {x: 3.6, y: -0.04, z: -3.93}, {x: -3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
-        .fromTo(target, {x: 3.16, y: -0.13, z: 0.51}, {x: isMobile ? -0.1 : 0.86, y: -0.13, z: 0.51, duration: 4, onUpdate}, '-=4')
+        .fromTo(position, {x: -3.6, y: -0.04, z: -3.93}, {x: 3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
+        .fromTo(target, {x: -3.16, y: -0.13, z: 0.21}, {x: isMobile ? -0.1 : -1.86, y: -0.13, z: 0.21, duration: 4, onUpdate}, '-=4')
+        //.fromTo(position, {x: 3.6, y: -0.04, z: -3.93}, {x: -3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
+        //.fromTo(target, {x: 3.16, y: -0.13, z: 0.51}, {x: isMobile ? -0.1 : 0.86, y: -0.13, z: 0.51, duration: 4, onUpdate}, '-=4')
         .fromTo('.header--container', {opacity: 0, y: '-100%'}, {opacity: 1, y: '0%', ease: "power1.inOut", duration: 0.8}, '-=1')
         .fromTo('.hero--scroller', {opacity: 0, y: '150%'}, {opacity: 1, y: '0%', ease: "power4.inOut", duration: 1}, '-=1')
-        .fromTo('.hero--content', {opacity: 0, x: '100%'}, {opacity: 1, x: '50%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
+        .fromTo('.hero--content', {opacity: 0, x: '100%'}, {opacity: 1, x: '0%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
     }
 
     function setupScrollAnimation(){
@@ -146,25 +148,30 @@ async function setupViewer(){
         const tl = gsap.timeline({ default: {ease: 'none'}})
 
         // PERFORMANCE SECTION
-        tl.to(position, {x: -2.5, y: 0.2, z: -3.5,
+        tl.to(position, {x: 2.5, y: 0.2, z: -6.5,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
 
-        .to(target,{x: isMobile ? 0.1 : -0.6, y: -0.1, z: 0.9,
+        .to(target,{x: isMobile ? 0.1 : 0.6, y: -0.1, z: 0.9,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
         .to('.hero--scroller', {opacity: 0, y: '150%',
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: false, pin: '.hero--scroller--container'
         }})
 
-        .to('.hero--content', {opacity: 0, xPercent: '-100', ease: "power4.out",
+        .to('.hero--content', {opacity: 0, xPercent: '100', ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: false, pin: '.hero--content',
         }}).addLabel("start")
 
-        .fromTo('.forever--content', {opacity: 0, x: '110%'}, {opacity: 1, x: '0%', ease: "power4.out",
+        .to('.forever--text-bg', {opacity: 0.1, ease: "power4.inOut",
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
+        }})
+
+        .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: '20%', ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.forever--container',
         }})
         .addLabel("Forever")
+        
 
         // // POWER SECTION
         .to(position,  {x: -0.07, y: isMobile ? 3 : 5.45, z: isMobile ? -1.1 : -3.7,

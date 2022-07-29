@@ -186,13 +186,15 @@ table {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	position: absolute;
 	width: 50%;
-	margin-left: 50%;
+	left: 50%;
+	height: 100vh;
 	.hero--content{
 		width: 100%;
 		max-width: 500px;
 		position: absolute;
-		margin-left: 10%;
+		margin-right: 20%;
 		opacity: 0;
 		h1{
 			position: relative;
@@ -290,8 +292,11 @@ table {
 .forever--container{
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
-	width: 80%;
+	justify-content: flex-start;
+	width: 70%;
+	position: absolute;
+	left: 0;
+	height: 100vh;
 	&.fixed{
 		position: fixed;
 		top: 50%
@@ -299,7 +304,7 @@ table {
 	.forever--content{
 		width: 320px;
 		position: absolute;
-		margin-right: 10%;
+		margin-left: 20%;
 		opacity: 0;
 		h1{
 			position: relative;
@@ -312,18 +317,33 @@ table {
 			margin-bottom: 40px;
 		}
 		h2 {
-			margin-bottom: 0;
+			margin-bottom: -16px;
 			font-weight: 400;
 			font-family: $qwitcher;
 			font-size: rem(56);
 			line-height: 100%;
 			letter-spacing: -0.04em;
+			padding-left: 76px;
 		}
 		p{
 			font-weight: 200;
 			font-size: rem(13);
 			line-height: 180%;
 		}
+	}
+	.forever--text-bg{
+		font-weight: 400;
+		font-family: $qwitcher;
+		font-size: rem(533);
+		line-height: 100%;
+		letter-spacing: -0.04em;
+		color: #CB6B56;
+		opacity: 0;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translateY(-70%);
+		pointer-events: none;
 	}
 }
 
