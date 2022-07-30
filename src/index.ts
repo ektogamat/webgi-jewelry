@@ -104,8 +104,8 @@ async function setupViewer(){
         const introTL = gsap.timeline()
         introTL
         .to('.loader', {x: '150%', duration: 0.8, ease: "power4.inOut", delay: 1})
-        .fromTo(position, {x: 3, y: -0.8, z: 1.2}, {x: 1.28, y: -1.7, z: 5.86, duration: 4, onUpdate}, '-=0.8')
-        .fromTo(target, {x: 2.5, y: -0.07, z: -0.1}, {x: 0.91, y: 0.03, z: -0.25, duration: 4, onUpdate}, '-=4')
+        .fromTo(position, {x: isMobile ? 3 : 3, y: isMobile ? -0.8 : -0.8, z: isMobile ? 1.2 : 1.2}, {x: isMobile ? 1.28 : 1.28, y: isMobile ? -1.7 : -1.7, z: isMobile ? 5.86 : 5.86, duration: 4, onUpdate}, '-=0.8')
+        .fromTo(target, {x: isMobile ? 2.5 : 2.5, y: isMobile ? -0.07 : -0.07, z: isMobile ? -0.1 : -0.1}, {x: isMobile ? -0.21 : 0.91, y: isMobile ? 0.03 : 0.03, z: isMobile ? -0.25 : -0.25, duration: 4, onUpdate}, '-=4')
         //.fromTo(position, {x: 3.6, y: -0.04, z: -3.93}, {x: -3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
         //.fromTo(target, {x: 3.16, y: -0.13, z: 0.51}, {x: isMobile ? -0.1 : 0.86, y: -0.13, z: 0.51, duration: 4, onUpdate}, '-=4')
         .fromTo('.header--container', {opacity: 0, y: '-100%'}, {opacity: 1, y: '0%', ease: "power1.inOut", duration: 0.8}, '-=1')

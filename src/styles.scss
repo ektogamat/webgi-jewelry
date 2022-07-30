@@ -233,11 +233,13 @@ table {
 			letter-spacing: -0.04em;
 			color: $text;
 			text-align: right;
+			margin-bottom: 40px;
 			@media (max-width: 600px) {
 				left: unset;
 				font-size: rem(70);
 				margin-bottom: 0;
 				margin-top: 75px;
+				text-align: center;
 			}
 		}
 		p{
@@ -245,6 +247,7 @@ table {
 			font-size: rem(13);
 			line-height: 180%;
 			text-align: right;
+			margin-bottom: 30px;
 			@media (max-width: 600px) {
 				margin: 0 auto 30px;
 				width: 85%;
@@ -265,8 +268,10 @@ table {
 			letter-spacing: -0.04em;;
 			color: $text;
 			padding: 10px;
+			float: right;
 			@media (max-width: 600px) {
 				margin: 0 auto 40px;
+				float: none;
 			}
 			cursor: pointer;
 			transition: all 0.8s ease-in-out;
