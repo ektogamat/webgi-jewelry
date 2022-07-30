@@ -12,13 +12,24 @@ import {
     FrameFadePlugin,
     DiamondPlugin,
     DepthOfFieldPlugin,
-    BloomPlugin, TemporalAAPlugin, RandomizedDirectionalLightPlugin, AssetImporter,
+    BufferGeometry,
+    MeshStandardMaterial2,
+    BloomPlugin, TemporalAAPlugin, RandomizedDirectionalLightPlugin, AssetImporter, Color, Mesh,
 } from "webgi"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import "./styles.scss"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const diamondsObjectNames = [
+    'diamonds003',
+    'diamonds002',
+    'diamonds001',
+    'diamonds005002',
+    'diamonds005',
+    'diamonds005001',
+]
 
 async function setupViewer(){
 
@@ -49,15 +60,27 @@ async function setupViewer(){
     // Add WEBGi plugins
     await viewer.addPlugin(GBufferPlugin)
     await viewer.addPlugin(new ProgressivePlugin(32))
-    await viewer.addPlugin(new TonemapPlugin(true, true))
+    await viewer.addPlugin(new TonemapPlugin(true, true), 
+        [
+          `// This part is added before the main function in tonemap pass.
+            vec4 vignette(vec4 color, vec2 uv, float offset, float darkness){
+                uv = ( uv - vec2( 0.5 ) ) * vec2( offset );
+                return vec4( mix( color.rgb, vec3( 1.0 - darkness ), dot( uv, uv ) ), color.a );
+            }`],
+        [ 
+            // This part is added inside main function after tonemapping before encoding conversion.
+            `gl_FragColor = vignette(gl_FragColor, vUv, 2.5, 0.75);`
+        ]
+       
+     )
     const ssr = await viewer.addPlugin(SSRPlugin)
     const ssao = await viewer.addPlugin(SSAOPlugin)
     await viewer.addPlugin(FrameFadePlugin)
     await viewer.addPlugin(GroundPlugin)
     const bloom = await viewer.addPlugin(BloomPlugin)
-    await viewer.addPlugin(TemporalAAPlugin)
+    await viewer.addPlugin(TemporalAAPlugin,)
     await viewer.addPlugin(DiamondPlugin)
-    await viewer.addPlugin(DepthOfFieldPlugin)
+    const dof = await viewer.addPlugin(DepthOfFieldPlugin)
     await viewer.addPlugin(RandomizedDirectionalLightPlugin, false)
 
     ssr!.passes.ssr.passObject.lowQualityFrames = 0
@@ -85,7 +108,15 @@ async function setupViewer(){
     // WEBGi load model
     await manager.addFromPath("./assets/ring_webgi.glb")
 
-    const ring = viewer.scene.findObjectsByName('Scene_1_1')[0]
+    const ring = viewer.scene.findObjectsByName('Scene_1_1')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+    const silver = viewer.scene.findObjectsByName('silver')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+    const gold = viewer.scene.findObjectsByName('gold')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+
+    const diamondObjects: any[] = []
+    for (const obj of diamondsObjectNames) {
+        const o = viewer.scene.findObjectsByName(obj)[0]
+        diamondObjects.push(o)
+    }
 
     if(camera.controls) camera.controls.enabled = false
 
@@ -131,6 +162,16 @@ async function setupViewer(){
         .to(ring.rotation,{z: -0.9,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
+        .fromTo(colorLerpValue, {x:0}, {x:1, 
+            scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+            , onUpdate: function() {
+            silver.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
+            gold.material.color.lerpColors(new Color(0xe2bf7f).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
+            for (const o of diamondObjects) {
+                o.material.color.lerpColors(new Color(0xe7e7e7).convertSRGBToLinear(), new Color(0x39cffe).convertSRGBToLinear(), colorLerpValue.x)
+            }
+
+        }})
         .to('.hero--scroller', {opacity: 0, y: '150%',
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: false, pin: '.hero--scroller--container'
         }})
@@ -149,9 +190,6 @@ async function setupViewer(){
         .addLabel("Forever")
         
 
-        
-
-
         // // EMOTIONS SECTION
         .to(position,  {x: -0.06, y: -1.15, z: 4.42,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false,
@@ -160,11 +198,20 @@ async function setupViewer(){
         .to(target, {x: -0.01, y: 0.9, z: 0.07,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
-        .to(ring.rotation,{x:0, y:0, z: 0,
+        .to(ring.rotation,{x: Math.PI *2, y:0, z: 0,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
+        .fromTo(colorLerpValue2, {x:0}, {x:1, 
+            scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
+            , onUpdate: function() {
+            silver.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
+            gold.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
+            for (const o of diamondObjects) {
+                o.material.color.lerpColors(new Color(0x39cffe).convertSRGBToLinear(), new Color(0xf70db1).convertSRGBToLinear(), colorLerpValue2.x)
+            }
+        }})
         .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
+            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
         .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
@@ -206,16 +253,26 @@ async function setupViewer(){
     function configAnimation(){
         const tlExplore = gsap.timeline()
 
-        tlExplore.to(position,{x: 5, y: 0.3, z: -4.5, duration: 2.5, onUpdate})
-        .to(target, {x: -0.26, y: -0.2, z: 0.9, duration: 2.5, onUpdate}, '-=2.5')
+        tlExplore.to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
+        .to(target, {x: 0.05, y: -0.07, z: 0.07, duration: 2.5, onUpdate}, '-=2.5')
+        .to(ring.rotation,{x: -Math.PI /2, y:0, z: 0, duration: 2.5}, '-=2.5')
         .fromTo('.header', {opacity: 0}, {opacity: 1, duration: 1.5, ease: "power4.out"}, '-=2.5')
-        .to('.emotions--content', {opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteExplore}, '-=2.5')
+        .to('.emotions--content', {opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation}, '-=2.5')
     }
 
-    function onCompleteExplore(){
+    let colorLerpValue = {x: 0}
+    let colorLerpValue2 = {x: 0}
+
+    function onCompleteConfigAnimation(){
         exitContainer.setAttribute("style", "display: flex")
-        if(camera.controls) camera.controls.enabled = true
+        if(camera.controls){
+            camera.controls.enabled = true
+            camera.controls.autoRotate = true
+        } 
+        dof.pass!.passObject.enabled = false
+
     }
+
 
     document.querySelector('.button--exit')?.addEventListener('click', () => {
         exploreView.setAttribute("style", "pointer-events: all")
@@ -229,14 +286,26 @@ async function setupViewer(){
 
     // EXIT EVENT
     function exitConfigAnimation(){
-        if(camera.controls) camera.controls.enabled = false
+
+        if(camera.controls){
+            camera.controls.enabled = true
+            camera.controls.autoRotate = false
+        } 
+        dof.pass!.passObject.enabled = true
+
 
         const tlExit = gsap.timeline()
 
         tlExit.to(position,{x: -0.06, y: -1.15, z: 4.42, duration: 1.2, ease: "power4.out", onUpdate})
         .to(target, {x: -0.01, y: 0.9, z: 0.07, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
+        .to(ring.rotation,{x:0, y:0, z: 0}, '-=1.2')
         .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
     }
+
+    // NIGHT MODE
+    document.querySelector('.night--mode')?.addEventListener('click', () => {
+        viewer.setBackground(new Color(0x22052f).convertSRGBToLinear())
+    })
 
 }
 
