@@ -47,12 +47,12 @@ async function setupViewer(){
     const camera = viewer.scene.activeCamera
     const position = camera.position
     const target = camera.target
-    
+
     // Interface Elements
     const exploreView = document.querySelector('.cam-view-3') as HTMLElement
     const canvasView = document.getElementById('webgi-canvas') as HTMLElement
     const canvasContainer = document.getElementById('webgi-canvas-container') as HTMLElement
-    const exitContainer = document.querySelector('.exit--container') as HTMLElement    
+    const exitContainer = document.querySelector('.exit--container') as HTMLElement
     const loaderElement = document.querySelector('.loader') as HTMLElement
     const header = document.querySelector('.header') as HTMLElement
     const bodyButton =  document.querySelector('.button--body') as HTMLElement
@@ -60,18 +60,16 @@ async function setupViewer(){
     // Add WEBGi plugins
     await viewer.addPlugin(GBufferPlugin)
     await viewer.addPlugin(new ProgressivePlugin(32))
-    await viewer.addPlugin(new TonemapPlugin(true, true), 
+    await viewer.addPlugin(new TonemapPlugin(true, true,
         [
           `// This part is added before the main function in tonemap pass.
             vec4 vignette(vec4 color, vec2 uv, float offset, float darkness){
                 uv = ( uv - vec2( 0.5 ) ) * vec2( offset );
                 return vec4( mix( color.rgb, vec3( 1.0 - darkness ), dot( uv, uv ) ), color.a );
-            }`],
-        [ 
+            }`,
             // This part is added inside main function after tonemapping before encoding conversion.
-            `gl_FragColor = vignette(gl_FragColor, vUv, 2.5, 0.75);`
-        ]
-       
+            `gl_FragColor = vignette(gl_FragColor, vUv, 1.5, 0.4);`
+        ])
      )
     const ssr = await viewer.addPlugin(SSRPlugin)
     const ssao = await viewer.addPlugin(SSAOPlugin)
@@ -162,7 +160,7 @@ async function setupViewer(){
         .to(ring.rotation,{z: -0.9,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
-        .fromTo(colorLerpValue, {x:0}, {x:1, 
+        .fromTo(colorLerpValue, {x:0}, {x:1,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
             , onUpdate: function() {
             silver.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
@@ -188,7 +186,7 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.forever--container',
         }})
         .addLabel("Forever")
-        
+
 
         // // EMOTIONS SECTION
         .to(position,  {x: -0.06, y: -1.15, z: 4.42,
@@ -201,7 +199,7 @@ async function setupViewer(){
         .to(ring.rotation,{x: Math.PI *2, y:0, z: 0,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
-        .fromTo(colorLerpValue2, {x:0}, {x:1, 
+        .fromTo(colorLerpValue2, {x:0}, {x:1,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
             , onUpdate: function() {
             silver.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
@@ -268,7 +266,7 @@ async function setupViewer(){
         if(camera.controls){
             camera.controls.enabled = true
             camera.controls.autoRotate = true
-        } 
+        }
         dof.pass!.passObject.enabled = false
 
     }
@@ -290,7 +288,7 @@ async function setupViewer(){
         if(camera.controls){
             camera.controls.enabled = true
             camera.controls.autoRotate = false
-        } 
+        }
         dof.pass!.passObject.enabled = true
 
 
