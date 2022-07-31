@@ -345,9 +345,9 @@ function setupCustomWheelSmoothScrolling(viewer: ViewerApp, element: HTMLElement
     }, {passive: false})
 
 
-    const idleSpeedFactor = 0.1
-    const snapSpeedFactor = 0.4
-    const snapProximity = window.innerHeight / 2
+    const idleSpeedFactor = 0.0
+    const snapSpeedFactor = 0.3
+    const snapProximity = window.innerHeight / 5
     const wheelDamping = 0.25
     const velocityDamping = 0.1
 

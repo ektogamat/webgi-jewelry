@@ -33,7 +33,7 @@ body {
 	font-family: $archivo;
 	scroll-behavior: smooth;
 	color: $text;
-	&::-webkit-scrollbar { 
+	&::-webkit-scrollbar {
 		display: none;
 	  }
 }
@@ -63,7 +63,7 @@ table {
 
 #webgi-canvas {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 	margin: 0;
 	padding: 0;
 	position: fixed;
@@ -478,7 +478,7 @@ table {
 
 			}
 		}
-		
+
 		.btn-customize{
 			background-color: $white;
 			width: 164px;
