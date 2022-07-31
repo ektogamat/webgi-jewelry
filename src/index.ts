@@ -33,8 +33,9 @@ const diamondsObjectNames = [
 
 async function setupViewer(){
 
+    const canvas = document.getElementById('webgi-canvas') as HTMLCanvasElement
     const viewer = new ViewerApp({
-        canvas: document.getElementById('webgi-canvas') as HTMLCanvasElement,
+        canvas,
         useGBufferDepth: true,
         isAntialiased: false
     })
@@ -116,7 +117,7 @@ async function setupViewer(){
         diamondObjects.push(o)
     }
 
-    if(camera.controls) camera.controls.enabled = false
+    if(camera.controls) camera.controls!.enabled = false
 
     // WEBGi mobile adjustments
     if(isMobile){
@@ -143,7 +144,7 @@ async function setupViewer(){
     }
 
     function setupScrollAnimation(){
-        document.body.setAttribute("style", "overflow-y: scroll")
+        document.body.style.overflowY = "scroll"
         document.body.removeChild(loaderElement)
 
         customScrollingEnabled = true
@@ -257,12 +258,12 @@ async function setupViewer(){
 
     // EXPLORE ALL FEATURES EVENT
     document.querySelector('.btn-customize')?.addEventListener('click', () => {
-        exploreView.setAttribute("style", "pointer-events: none")
-        canvasView.setAttribute("style", "pointer-events: all")
-        canvasContainer.setAttribute("style", "z-index: 1")
-        header.setAttribute("style", "position: fixed")
-        document.body.setAttribute("style", "overflow-y: hidden")
-        document.body.setAttribute("style", "cursor: grab")
+        exploreView.style.pointerEvents = "none"
+        canvasView.style.pointerEvents = "all"
+        canvasContainer.style.zIndex = "1"
+        header.style.position = "fixed"
+        document.body.style.overflowY = "hidden"
+        document.body.style.cursor = "grab"
         configAnimation()
         customScrollingEnabled = false
     })
@@ -281,7 +282,7 @@ async function setupViewer(){
     let colorLerpValue2 = {x: 0}
 
     function onCompleteConfigAnimation(){
-        exitContainer.setAttribute("style", "display: flex")
+        exitContainer.style.display = "flex"
         if(camera.controls){
             camera.controls.enabled = true
             camera.controls.autoRotate = true
@@ -292,12 +293,12 @@ async function setupViewer(){
 
 
     document.querySelector('.button--exit')?.addEventListener('click', () => {
-        exploreView.setAttribute("style", "pointer-events: all")
-        canvasView.setAttribute("style", "pointer-events: none")
-        canvasContainer.setAttribute("style", "z-index: unset")
-        document.body.setAttribute("style", "overflow-y: auto")
-        exitContainer.setAttribute("style", "display: none")
-        header.setAttribute("style", "position: absolute")
+        exploreView.style.pointerEvents = "all"
+        canvasView.style.pointerEvents = "none"
+        canvasContainer.style.zIndex = "unset"
+        document.body.style.overflowY = "auto"
+        exitContainer.style.display = "none"
+        header.style.position = "absolute"
         exitConfigAnimation()
         customScrollingEnabled = true;
     })
