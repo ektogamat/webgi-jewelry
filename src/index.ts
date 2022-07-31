@@ -1,20 +1,25 @@
 import {
     ViewerApp,
-    AssetManagerPlugin,
-    timeout,
-    SSRPlugin,
-    mobileAndTabletCheck,
-    GBufferPlugin,
-    ProgressivePlugin,
-    TonemapPlugin,
-    SSAOPlugin,
-    GroundPlugin,
-    FrameFadePlugin,
-    DiamondPlugin,
-    DepthOfFieldPlugin,
-    BufferGeometry,
-    MeshStandardMaterial2,
-    BloomPlugin, TemporalAAPlugin, RandomizedDirectionalLightPlugin, AssetImporter, Color, Mesh, createStyles,
+AssetManagerPlugin,
+timeout,
+SSRPlugin,
+mobileAndTabletCheck,
+GBufferPlugin,
+ProgressivePlugin,
+TonemapPlugin,
+SSAOPlugin,
+GroundPlugin,
+FrameFadePlugin,
+DiamondPlugin,
+DepthOfFieldPlugin,
+BufferGeometry,
+MeshStandardMaterial2,
+BloomPlugin, 
+TemporalAAPlugin, 
+RandomizedDirectionalLightPlugin, 
+AssetImporter, 
+Color, 
+Mesh
 } from "webgi"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -56,7 +61,9 @@ async function setupViewer(){
     const exitContainer = document.querySelector('.exit--container') as HTMLElement
     const loaderElement = document.querySelector('.loader') as HTMLElement
     const header = document.querySelector('.header') as HTMLElement
-    const bodyButton =  document.querySelector('.button--body') as HTMLElement
+    const camView1 =  document.querySelector('.cam-view-1') as HTMLElement
+    const camView3 =  document.querySelector('.cam-view-3') as HTMLElement
+    let nightMode = false
 
     // Add WEBGi plugins
     await viewer.addPlugin(GBufferPlugin)
@@ -66,10 +73,10 @@ async function setupViewer(){
           `// This part is added before the main function in tonemap pass.
             vec4 vignette(vec4 color, vec2 uv, float offset, float darkness){
                 uv = ( uv - vec2( 0.5 ) ) * vec2( offset );
-                return vec4( mix( color.rgb, vec3( 1.0 - darkness ), dot( uv, uv ) ), color.a );
+                return vec4( mix( color.rgb, vec3( 0.17, 0.00, 0.09 ), dot( uv, uv ) ), color.a );
             }`,
             // This part is added inside main function after tonemapping before encoding conversion.
-            `gl_FragColor = vignette(gl_FragColor, vUv, 1.5, 0.4);`
+            `gl_FragColor = vignette(gl_FragColor, vUv, 1.2, 1.0);`
         ])
      )
     const ssr = await viewer.addPlugin(SSRPlugin)
@@ -103,6 +110,7 @@ async function setupViewer(){
     })
 
     viewer.renderer.refreshPipeline()
+
 
     // WEBGi load model
     await manager.addFromPath("./assets/ring_webgi.glb")
@@ -147,11 +155,11 @@ async function setupViewer(){
         document.body.style.overflowY = "scroll"
         document.body.removeChild(loaderElement)
 
-        customScrollingEnabled = true
+        // customScrollingEnabled = true
 
         const tl = gsap.timeline({ default: {ease: 'none'}})
 
-        // PERFORMANCE SECTION
+        // FOREVER
         tl.to(position, {x: -1.83, y: -0.14, z: 6.15,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
@@ -178,7 +186,7 @@ async function setupViewer(){
 
         .to('.hero--content', {opacity: 0, xPercent: '100', ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: false, pin: '.hero--content',
-        }}).addLabel("start")
+        }})
 
         .to('.forever--text-bg', {opacity: 0.1, ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
@@ -216,6 +224,9 @@ async function setupViewer(){
         .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
             scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
         }})
+        .to('.forever--content', {opacity: 0, ease: "power4.inOut",
+            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top center', scrub: 1, immediateRender: false
+        }})
         .addLabel("Emotions")
 
     }
@@ -225,22 +236,22 @@ async function setupViewer(){
         needsUpdate = true;
     }
 
-    if(!isMobile){
-        const sections = document.querySelectorAll('.section')
-        const sectionTops: number[] = []
-        sections.forEach(section=> {
-            sectionTops.push(section.getBoundingClientRect().top)
-        })
-        setupCustomWheelSmoothScrolling(viewer, document.documentElement, sectionTops, )
-    }
-    else {
-        createStyles(`
-.section-wrapper {
-  scroll-snap-type: y mandatory;
-}
+    // if(!isMobile){
+    //     const sections = document.querySelectorAll('.section')
+    //     const sectionTops: number[] = []
+    //     sections.forEach(section=> {
+    //         sectionTops.push(section.getBoundingClientRect().top)
+    //     })
+    //     setupCustomWheelSmoothScrolling(viewer, document.documentElement, sectionTops, )
+    // }
+    // else {
+    //     createStyles(`
+    //         .section-wrapper {
+    //         scroll-snap-type: y mandatory;
+    //         }
 
-        `)
-    }
+    //     `)
+    // }
 
     viewer.addEventListener('preFrame', ()=>{
         if(needsUpdate){
@@ -265,7 +276,7 @@ async function setupViewer(){
         document.body.style.overflowY = "hidden"
         document.body.style.cursor = "grab"
         configAnimation()
-        customScrollingEnabled = false
+        // customScrollingEnabled = false
     })
 
     function configAnimation(){
@@ -276,6 +287,8 @@ async function setupViewer(){
         .to(ring.rotation,{x: -Math.PI /2, y:0, z: 0, duration: 2.5}, '-=2.5')
         .fromTo('.header', {opacity: 0}, {opacity: 1, duration: 1.5, ease: "power4.out"}, '-=2.5')
         .to('.emotions--content', {opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation}, '-=2.5')
+        .to('.footer--menu', {opacity: 1, duration: 1.5})
+
     }
 
     let colorLerpValue = {x: 0}
@@ -300,7 +313,8 @@ async function setupViewer(){
         exitContainer.style.display = "none"
         header.style.position = "absolute"
         exitConfigAnimation()
-        customScrollingEnabled = true;
+
+        // customScrollingEnabled = true;
     })
 
     // EXIT EVENT
@@ -323,10 +337,23 @@ async function setupViewer(){
 
     // NIGHT MODE
     document.querySelector('.night--mode')?.addEventListener('click', () => {
-        viewer.setBackground(new Color(0x22052f).convertSRGBToLinear())
+        if(!nightMode){
+            header.classList.add('night--mode--filter')
+            camView1.classList.add('night--mode--filter')
+            camView3.classList.add('night--mode--filter')
+            viewer.setBackground(new Color(0x22052f).convertSRGBToLinear())
+            nightMode = true
+        } else{
+            header.classList.remove('night--mode--filter')
+            camView1.classList.remove('night--mode--filter')
+            camView3.classList.remove('night--mode--filter')
+            viewer.setBackground(new Color(0xE4B9B8).convertSRGBToLinear())
+            nightMode = false
+        }
     })
-
 }
+
+    // CONFIG MENU
 
 let customScrollingEnabled = false
 function setupCustomWheelSmoothScrolling(viewer: ViewerApp, element: HTMLElement, snapPositions: number[], speed = 1.5){
