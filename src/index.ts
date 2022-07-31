@@ -36,6 +36,8 @@ const diamondsObjectNames = [
     'diamonds005001',
 ]
 
+let usingCustomColors = false
+
 async function setupViewer(){
 
     const canvas = document.getElementById('webgi-canvas') as HTMLCanvasElement
@@ -63,6 +65,11 @@ async function setupViewer(){
     const header = document.querySelector('.header') as HTMLElement
     const camView1 =  document.querySelector('.cam-view-1') as HTMLElement
     const camView3 =  document.querySelector('.cam-view-3') as HTMLElement
+    const gemMenu =  document.querySelector('.gem--menu') as HTMLElement
+    const footerMenu =  document.querySelector('.footer--menu') as HTMLElement
+    const materialsMenu = document.querySelector('.materials--menu') as HTMLElement
+    const configMaterial = document.querySelector('.config--material') as HTMLElement
+    const configGem = document.querySelector('.config--gem') as HTMLElement
     let nightMode = false
 
     // Add WEBGi plugins
@@ -173,12 +180,13 @@ async function setupViewer(){
         .fromTo(colorLerpValue, {x:0}, {x:1,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
             , onUpdate: function() {
-            silver.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
-            gold.material.color.lerpColors(new Color(0xe2bf7f).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
-            for (const o of diamondObjects) {
-                o.material.color.lerpColors(new Color(0xe7e7e7).convertSRGBToLinear(), new Color(0x39cffe).convertSRGBToLinear(), colorLerpValue.x)
-            }
-
+                if(!usingCustomColors){
+                    silver.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
+                    gold.material.color.lerpColors(new Color(0xe2bf7f).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
+                    for (const o of diamondObjects) {
+                        o.material.color.lerpColors(new Color(0xe7e7e7).convertSRGBToLinear(), new Color(0x39cffe).convertSRGBToLinear(), colorLerpValue.x)
+                    }
+                }
         }})
         .to('.hero--scroller', {opacity: 0, y: '150%',
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: false, pin: '.hero--scroller--container'
@@ -212,11 +220,13 @@ async function setupViewer(){
         .fromTo(colorLerpValue2, {x:0}, {x:1,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
             , onUpdate: function() {
-            silver.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
-            gold.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
-            for (const o of diamondObjects) {
-                o.material.color.lerpColors(new Color(0x39cffe).convertSRGBToLinear(), new Color(0xf70db1).convertSRGBToLinear(), colorLerpValue2.x)
-            }
+                if(!usingCustomColors){
+                    silver.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
+                    gold.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
+                    for (const o of diamondObjects) {
+                        o.material.color.lerpColors(new Color(0x39cffe).convertSRGBToLinear(), new Color(0xf70db1).convertSRGBToLinear(), colorLerpValue2.x)
+                    }
+                }
         }})
         .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
@@ -272,7 +282,6 @@ async function setupViewer(){
         exploreView.style.pointerEvents = "none"
         canvasView.style.pointerEvents = "all"
         canvasContainer.style.zIndex = "1"
-        header.style.position = "fixed"
         document.body.style.overflowY = "hidden"
         document.body.style.cursor = "grab"
         configAnimation()
@@ -285,9 +294,8 @@ async function setupViewer(){
         tlExplore.to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
         .to(target, {x: 0.05, y: -0.07, z: 0.07, duration: 2.5, onUpdate}, '-=2.5')
         .to(ring.rotation,{x: -Math.PI /2, y:0, z: 0, duration: 2.5}, '-=2.5')
-        .fromTo('.header', {opacity: 0}, {opacity: 1, duration: 1.5, ease: "power4.out"}, '-=2.5')
         .to('.emotions--content', {opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation}, '-=2.5')
-        .to('.footer--menu', {opacity: 1, duration: 1.5})
+        .fromTo('.footer--menu',{opacity: 0, y:'150%'}, {opacity: 1, y: '0%', duration: 1.5})
 
     }
 
@@ -311,7 +319,6 @@ async function setupViewer(){
         canvasContainer.style.zIndex = "unset"
         document.body.style.overflowY = "auto"
         exitContainer.style.display = "none"
-        header.style.position = "absolute"
         exitConfigAnimation()
 
         // customScrollingEnabled = true;
@@ -326,13 +333,20 @@ async function setupViewer(){
         }
         dof.pass!.passObject.enabled = true
 
+        gemMenu.classList.remove('show')
+        materialsMenu.classList.remove('show')
+        if (document.querySelector('.footer--menu li.active')){
+            document.querySelector('.footer--menu li.active')?.classList.remove('active')
+        }
 
         const tlExit = gsap.timeline()
 
         tlExit.to(position,{x: -0.06, y: -1.15, z: 4.42, duration: 1.2, ease: "power4.out", onUpdate})
         .to(target, {x: -0.01, y: 0.9, z: 0.07, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
         .to(ring.rotation,{x:0, y:0, z: 0}, '-=1.2')
+        .to('.footer--menu',{opacity: 0, y:'150%'}, '-=1.2')
         .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
+
     }
 
     // NIGHT MODE
@@ -341,65 +355,203 @@ async function setupViewer(){
             header.classList.add('night--mode--filter')
             camView1.classList.add('night--mode--filter')
             camView3.classList.add('night--mode--filter')
+            camView3.classList.add('night--mode--filter')
+            footerMenu.classList.add('night--mode--filter')
             viewer.setBackground(new Color(0x22052f).convertSRGBToLinear())
             nightMode = true
         } else{
             header.classList.remove('night--mode--filter')
             camView1.classList.remove('night--mode--filter')
             camView3.classList.remove('night--mode--filter')
+            footerMenu.classList.remove('night--mode--filter')
             viewer.setBackground(new Color(0xE4B9B8).convertSRGBToLinear())
             nightMode = false
         }
     })
-}
 
-    // CONFIG MENU
-
-let customScrollingEnabled = false
-function setupCustomWheelSmoothScrolling(viewer: ViewerApp, element: HTMLElement, snapPositions: number[], speed = 1.5){
-    let customScrollY = element.scrollTop
-    let frameDelta = 0
-    let scrollVelocity = 0
-    let lastDeltaDirection = 0
-
-    window.addEventListener('wheel', (e: WheelEvent)=>{
-        if(!customScrollingEnabled) return;
-        e.preventDefault()
-        e.stopPropagation()
-        // todo: check delta mode?
-        frameDelta = Math.min(Math.max(e.deltaY * speed, -window.innerHeight / 3), window.innerHeight / 3);
-        lastDeltaDirection = Math.sign(frameDelta)
-        return false
-    }, {passive: false})
-
-
-    const idleSpeedFactor = 0.0
-    const snapSpeedFactor = 0.3
-    const snapProximity = window.innerHeight / 5
-    const wheelDamping = 0.25
-    const velocityDamping = 0.1
-
-    viewer.addEventListener('preFrame', ()=>{
-        if(!customScrollingEnabled) return;
-        if (Math.abs(frameDelta) < 1) {
-            const nearestSection = snapPositions.reduce((prev, curr) => Math.abs(curr - customScrollY) < Math.abs(prev - customScrollY) ? curr : prev)
-            let d = nearestSection - customScrollY
-            if(Math.sign(d) !== lastDeltaDirection) d *= -1
-            scrollVelocity = d * (Math.abs(d) < snapProximity ? snapSpeedFactor : idleSpeedFactor);
+    // GEM MENU
+    configGem.addEventListener('click', () => {
+        gemMenu.classList.add('show')
+        materialsMenu.classList.remove('show')
+        
+        if (document.querySelector('.footer--menu li.active')){
+            document.querySelector('.footer--menu li.active')?.classList.remove('active')
         }
-        scrollVelocity += frameDelta * wheelDamping
-        frameDelta *= (1.-wheelDamping)
-        if (Math.abs(frameDelta) < 0.01) frameDelta = 0
-        if (Math.abs(scrollVelocity) > 0.01) {
-            customScrollY = Math.max(customScrollY + scrollVelocity * velocityDamping, 0)
-            element.scrollTop = customScrollY
-            scrollVelocity *= (1.-velocityDamping)
-        } else {
-            scrollVelocity = 0
-        }
-
+        configGem.parentElement?.classList.add('active')
     })
 
+    // DIAMOND COLORS
+    document.querySelector('.ruby')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#f70db1'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.ruby')?.classList.add('active')
+    })
+    document.querySelector('.faint')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#CFECEC'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.faint')?.classList.add('active')
+     })
+     document.querySelector('.fancy')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#a9cbe2'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.fancy')?.classList.add('active')
+     })
+     
+     document.querySelector('.aqua')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#62cffe'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.aqua')?.classList.add('active')
+     })
+     document.querySelector('.swiss')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#76dce4'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.swiss')?.classList.add('active')
+     })
+     document.querySelector('.yellow')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#efe75b'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.yellow')?.classList.add('active')
+     })
+     document.querySelector('.orange')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#eb8e17'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.orange')?.classList.add('active')
+     })
+     document.querySelector('.green')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#17ebb5'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.green')?.classList.add('active')
+     })
+     document.querySelector('.emerald')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#5eca00'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.emerald')?.classList.add('active')
+     })
+     document.querySelector('.rose')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#fa37d7'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.rose')?.classList.add('active')
+     })
+     document.querySelector('.violet')?.addEventListener('click', () => {
+        changeDiamondColor(new Color('#c200f2'))
+        document.querySelector('.colors--list li.active')?.classList.remove('active')
+        document.querySelector('.violet')?.classList.add('active')
+     })
+
+    // CHANGE DIAMOND COLOR
+    function changeDiamondColor(_gemColor: Color){
+        for (const o of diamondObjects) {
+            o.material.color = _gemColor
+        }
+        usingCustomColors = true
+    }
+
+
+    // MATERIALS MENU
+    configMaterial.addEventListener('click', () => {
+        materialsMenu.classList.add('show')
+        gemMenu.classList.remove('show')
+        
+        if (document.querySelector('.footer--menu li.active')){
+            document.querySelector('.footer--menu li.active')?.classList.remove('active')
+        }
+        configMaterial.parentElement?.classList.add('active')
+    })
+
+    // MATERIALS COLOR
+    document.querySelector('.default')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xfea04d),new Color(0xffffff))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.default')?.classList.add('active')
+     })
+    document.querySelector('.silver-gold')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xffffff), new Color(0xfea04d))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.silver-gold')?.classList.add('active')
+     })
+     
+    document.querySelector('.silver-silver')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xffffff), new Color(0xffffff))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.silver-silver')?.classList.add('active')
+     })
+    
+    document.querySelector('.gold-gold')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xfea04d), new Color(0xfea04d))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.gold-gold')?.classList.add('active')
+     })
+    document.querySelector('.rose-silver')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xfa8787), new Color(0xffffff))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.rose-silver')?.classList.add('active')
+    })
+    document.querySelector('.gold-rose')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xfea04d), new Color(0xfa8787))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.gold-rose')?.classList.add('active')
+    })
+    document.querySelector('.rose-rose')?.addEventListener('click', () => {
+        changeMaterialColor(new Color(0xfa8787), new Color(0xfa8787))
+        document.querySelector('.materials--list li.active')?.classList.remove('active')
+        document.querySelector('.rose-rose')?.classList.add('active')
+    })
+
+    // CHANGE MATERIAL COLOR
+    function changeMaterialColor(_firstColor: Color, _secondColoor: Color){
+        silver.material.color = _firstColor
+        gold.material.color = _secondColoor
+        usingCustomColors = true
+    }
+
 }
+
+
+// let customScrollingEnabled = false
+// function setupCustomWheelSmoothScrolling(viewer: ViewerApp, element: HTMLElement, snapPositions: number[], speed = 1.5){
+//     let customScrollY = element.scrollTop
+//     let frameDelta = 0
+//     let scrollVelocity = 0
+//     let lastDeltaDirection = 0
+
+//     window.addEventListener('wheel', (e: WheelEvent)=>{
+//         if(!customScrollingEnabled) return;
+//         e.preventDefault()
+//         e.stopPropagation()
+//         // todo: check delta mode?
+//         frameDelta = Math.min(Math.max(e.deltaY * speed, -window.innerHeight / 3), window.innerHeight / 3);
+//         lastDeltaDirection = Math.sign(frameDelta)
+//         return false
+//     }, {passive: false})
+
+
+//     const idleSpeedFactor = 0.0
+//     const snapSpeedFactor = 0.3
+//     const snapProximity = window.innerHeight / 5
+//     const wheelDamping = 0.25
+//     const velocityDamping = 0.1
+
+//     viewer.addEventListener('preFrame', ()=>{
+//         if(!customScrollingEnabled) return;
+//         if (Math.abs(frameDelta) < 1) {
+//             const nearestSection = snapPositions.reduce((prev, curr) => Math.abs(curr - customScrollY) < Math.abs(prev - customScrollY) ? curr : prev)
+//             let d = nearestSection - customScrollY
+//             if(Math.sign(d) !== lastDeltaDirection) d *= -1
+//             scrollVelocity = d * (Math.abs(d) < snapProximity ? snapSpeedFactor : idleSpeedFactor);
+//         }
+//         scrollVelocity += frameDelta * wheelDamping
+//         frameDelta *= (1.-wheelDamping)
+//         if (Math.abs(frameDelta) < 0.01) frameDelta = 0
+//         if (Math.abs(scrollVelocity) > 0.01) {
+//             customScrollY = Math.max(customScrollY + scrollVelocity * velocityDamping, 0)
+//             element.scrollTop = customScrollY
+//             scrollVelocity *= (1.-velocityDamping)
+//         } else {
+//             scrollVelocity = 0
+//         }
+
+//     })
+
+// }
 
 setupViewer()

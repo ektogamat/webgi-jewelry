@@ -99,7 +99,7 @@ table {
 		top: 60%;
 		width: 50%;
 		height: 1px;
-		background: #c42323;
+		background: $text;
 		transform: scaleX(0);
 		transition: transform 1s;
 		transform-origin: left;
@@ -191,6 +191,7 @@ table {
 	z-index: 2;
 	.footer--menu {
 		opacity: 0;
+		transform: translateY(150%);
 	}
 	.footer--menu ul{
 		list-style: none;
@@ -229,7 +230,6 @@ table {
 		-khtml-user-drag: none;
 		-moz-user-drag: none;
 		-o-user-drag: none;
-		user-drag: none;
 	  }
 	  
 	  .gem--menu{
@@ -241,14 +241,14 @@ table {
 		padding: 20px 60px;
 		visibility: hidden;
 		opacity: 0;
-		transition: all 0.8s ease-in-out;
+		transition: all 0.4s ease-in-out;
 		/* backdrop-filter: blur(5px); */
 	  }
 	  
 	  .gem--menu > ul{
 		list-style: none;
 		display: inline-flex;
-		gap: 3em;
+		gap: 2em;
 		margin: 0;
 		padding: 0;
 	  }
@@ -269,7 +269,6 @@ table {
 		-khtml-user-drag: none;
 		-moz-user-drag: none;
 		-o-user-drag: none;
-		user-drag: none;
 	  }
 	  
 	  .gem--menu li img:hover{
@@ -287,7 +286,7 @@ table {
 		border: 1px solid #d4b1b1;
 	  }
 	  
-	  .gem--menu.ended{
+	  .gem--menu.show{
 		visibility: visible;
 		opacity: 1;
 	  }
@@ -312,7 +311,7 @@ table {
 		padding: 20px 60px;
 		visibility: hidden;
 		opacity: 0;
-		transition: all 0.8s ease-in-out;
+		transition: all 0.3s ease-in-out;
 		/* backdrop-filter: blur(5px); */
 	  }
 	  
@@ -333,7 +332,6 @@ table {
 	  
 	  }
 	  .materials--menu li img{
-		margin-top: 7px;  
 		transition: all 0.8s ease-in-out;
 		user-select: none;
 		-webkit-user-select: none;
@@ -341,7 +339,7 @@ table {
 		-khtml-user-drag: none;
 		-moz-user-drag: none;
 		-o-user-drag: none;
-		user-drag: none;
+		width: 50px;
 	  }
 	  
 	  .materials--menu li img:hover{
@@ -355,11 +353,11 @@ table {
 		/* background: #5a3540; */
 		border-radius: 50px;
 		position: absolute;
-		top: 15px;
+		top: 7px;
 		border: 1px solid #d4b1b1;
 	  }
 	  
-	  .materials--menu.ended{
+	  .materials--menu.show{
 		visibility: visible;
 		opacity: 1;
 	  }
@@ -743,9 +741,9 @@ table {
     height: 100%;
     align-content: center;
     top: 0;
-    align-items: flex-end;
+	align-items: flex-start;
+    justify-content: flex-end;
     position: fixed;
-    justify-content: center;
     z-index: 3;
     pointer-events: none;
     left: 0;
