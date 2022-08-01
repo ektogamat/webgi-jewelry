@@ -238,7 +238,7 @@ table {
 		bottom: 90px;
 		background: #ffffffe0;
 		border-radius: 50px;
-		padding: 20px 60px;
+		padding: 20px 30px;
 		visibility: hidden;
 		opacity: 0;
 		transition: all 0.4s ease-in-out;
@@ -292,12 +292,6 @@ table {
 	  }
 	  
 	  .close-gems{
-		opacity: 1;
-		transform: translate(0px, 0%);
-		background: #5a3540;
-		color: white;
-		padding: 0px 20px;
-		border-radius: 50px;
 		margin-top: 5px;
 	  }
 	  
@@ -308,10 +302,10 @@ table {
 		bottom: 90px;
 		background: #ffffffe0;
 		border-radius: 50px;
-		padding: 20px 60px;
+		padding: 20px 30px;
 		visibility: hidden;
 		opacity: 0;
-		transition: all 0.3s ease-in-out;
+		transition: all 0.8s ease-in-out;
 		/* backdrop-filter: blur(5px); */
 	  }
 	  
@@ -363,12 +357,6 @@ table {
 	  }
 	  
 	  .close-materials{
-		opacity: 1;
-		transform: translate(0px, 0%);
-		background: #5a3540;
-		color: white;
-		padding: 0px 20px;
-		border-radius: 50px;
 		margin-top: 5px;
 	  }
 }
@@ -457,19 +445,23 @@ table {
 		}
 		.button{
 			background-color: transparent;
-			width: 194px;
+			width: 155px;
 			height: 60px;
-			border: 1px solid $text;
+			border: 1px solid #52322B;
 			border-radius: 58px;
 			display: flex;
 			align-items: center;
-			justify-content: space-evenly;
+			justify-content: flex-end;
 			font-weight: 200;
-			font-size: rem(15);
-			letter-spacing: -0.04em;;
-			color: $text;
-			padding: 10px;
+			font-size: 0.9375rem;
+			letter-spacing: -0.04em;
+			color: #52322B;
 			float: right;
+			cursor: pointer;
+			transition: all 0.8s ease-in-out;
+			gap: 1em;
+			FONT-WEIGHT: 100;
+			flex-direction: row;
 			@media (max-width: 600px) {
 				margin: 0 auto 40px;
 				float: none;
@@ -738,15 +730,19 @@ table {
 .exit--container{
     display: none;
     width: 100%;
-    height: 100%;
     align-content: center;
     top: 0;
-	align-items: flex-start;
-    justify-content: flex-end;
+	align-items: flex-end;
+    justify-content: space-between;
     position: fixed;
     z-index: 3;
     pointer-events: none;
-    left: 0;
+	.customize--title{
+		margin-top: 60px;
+		margin-left: 60px;
+		font-family: $qwitcher;
+		font-size: rem(40);
+	}
 }
 
 .button--secondary{

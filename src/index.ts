@@ -70,6 +70,8 @@ async function setupViewer(){
     const materialsMenu = document.querySelector('.materials--menu') as HTMLElement
     const configMaterial = document.querySelector('.config--material') as HTMLElement
     const configGem = document.querySelector('.config--gem') as HTMLElement
+    const closeConfigMaterial = document.querySelector('.close-materials') as HTMLElement
+    const closeConfigGem = document.querySelector('.close-gems') as HTMLElement
     let nightMode = false
 
     // Add WEBGi plugins
@@ -83,7 +85,7 @@ async function setupViewer(){
                 return vec4( mix( color.rgb, vec3( 0.17, 0.00, 0.09 ), dot( uv, uv ) ), color.a );
             }`,
             // This part is added inside main function after tonemapping before encoding conversion.
-            `gl_FragColor = vignette(gl_FragColor, vUv, 0.7, 0.8);`
+            `gl_FragColor = vignette(gl_FragColor, vUv, 1.1, 0.8);`
         ])
      )
     const ssr = await viewer.addPlugin(SSRPlugin)
@@ -95,6 +97,7 @@ async function setupViewer(){
     await viewer.addPlugin(DiamondPlugin)
     const dof = await viewer.addPlugin(DepthOfFieldPlugin)
     await viewer.addPlugin(RandomizedDirectionalLightPlugin, false)
+    viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
 
     ssr!.passes.ssr.passObject.lowQualityFrames = 0
     bloom.pass!.passObject.bloomIterations = 2
@@ -186,24 +189,24 @@ async function setupViewer(){
                     silver.material.color.lerpColors(new Color(0xfefefe).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
                     gold.material.color.lerpColors(new Color(0xe2bf7f).convertSRGBToLinear(), new Color(0xd28b8b).convertSRGBToLinear(), colorLerpValue.x)
                     for (const o of diamondObjects) {
-                        o.material.color.lerpColors(new Color(0xe7e7e7).convertSRGBToLinear(), new Color(0x39cffe).convertSRGBToLinear(), colorLerpValue.x)
+                        o.material.color.lerpColors(new Color(0xffffff).convertSRGBToLinear(), new Color(0x39cffe).convertSRGBToLinear(), colorLerpValue.x)
                     }
                 }
         }})
         .to('.hero--scroller', {opacity: 0, y: '150%',
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: false, pin: '.hero--scroller--container'
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: true, pin: '.hero--scroller--container'
         }})
 
         .to('.hero--content', {opacity: 0, xPercent: '100', ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: false, pin: '.hero--content',
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: true, pin: '.hero--content',
         }})
 
         .to('.forever--text-bg', {opacity: 0.1, ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,
         }})
 
         .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: isMobile ? '0' : '20%', ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false, pin: '.forever--container',
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true, pin: '.forever--container',
         }})
         .addLabel("Forever")
 
@@ -366,7 +369,7 @@ async function setupViewer(){
             camView1.classList.remove('night--mode--filter')
             camView3.classList.remove('night--mode--filter')
             footerMenu.classList.remove('night--mode--filter')
-            viewer.setBackground(new Color(0xec9e9e).convertSRGBToLinear())
+            viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
             nightMode = false
         }
     })
@@ -506,6 +509,23 @@ async function setupViewer(){
         usingCustomColors = true
     }
 
+    // CLOSE GEM MENU
+    closeConfigGem.addEventListener('click', () => {
+        gemMenu.classList.remove('show')
+       
+        if (document.querySelector('.footer--menu li.active')){
+            document.querySelector('.footer--menu li.active')?.classList.remove('active')
+        }
+    })
+
+    // CLOSE MATERIAL MENU
+    closeConfigMaterial.addEventListener('click', () => {
+        materialsMenu.classList.remove('show')
+       
+        if (document.querySelector('.footer--menu li.active')){
+            document.querySelector('.footer--menu li.active')?.classList.remove('active')
+        }
+    })
 }
 
 
