@@ -28,12 +28,12 @@ import "./styles.scss"
 gsap.registerPlugin(ScrollTrigger)
 
 const diamondsObjectNames = [
-    'diamonds003',
-    'diamonds002',
+    'diamonds',
     'diamonds001',
-    'diamonds005002',
+    'diamonds002',
+    'diamonds003',
+    'diamonds004',
     'diamonds005',
-    'diamonds005001',
 ]
 
 let usingCustomColors = false
@@ -75,7 +75,7 @@ async function setupViewer(){
     // Add WEBGi plugins
     await viewer.addPlugin(GBufferPlugin)
     await viewer.addPlugin(new ProgressivePlugin(32))
-    await viewer.addPlugin(new TonemapPlugin(true, true,
+    await viewer.addPlugin(new TonemapPlugin(true, false,
         [
           `// This part is added before the main function in tonemap pass.
             vec4 vignette(vec4 color, vec2 uv, float offset, float darkness){
@@ -83,7 +83,7 @@ async function setupViewer(){
                 return vec4( mix( color.rgb, vec3( 0.17, 0.00, 0.09 ), dot( uv, uv ) ), color.a );
             }`,
             // This part is added inside main function after tonemapping before encoding conversion.
-            `gl_FragColor = vignette(gl_FragColor, vUv, 1.2, 1.0);`
+            `gl_FragColor = vignette(gl_FragColor, vUv, 0.7, 0.8);`
         ])
      )
     const ssr = await viewer.addPlugin(SSRPlugin)
@@ -122,7 +122,7 @@ async function setupViewer(){
     // WEBGi load model
     await manager.addFromPath("./assets/ring_webgi.glb")
 
-    const ring = viewer.scene.findObjectsByName('Scene_1_1')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+    const ring = viewer.scene.findObjectsByName('Scene')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
     const silver = viewer.scene.findObjectsByName('silver')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
     const gold = viewer.scene.findObjectsByName('gold')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
 
@@ -131,6 +131,8 @@ async function setupViewer(){
         const o = viewer.scene.findObjectsByName(obj)[0]
         diamondObjects.push(o)
     }
+
+    console.log(viewer.scene.findObjectsByName('Scene')[0])
 
     if(camera.controls) camera.controls!.enabled = false
 
@@ -174,7 +176,7 @@ async function setupViewer(){
         .to(target,{x:-0.78, y: -0.03, z: -0.12,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
-        .to(ring.rotation,{z: -0.9,
+        .to(ring.rotation,{z: Math.PI /2,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .fromTo(colorLerpValue, {x:0}, {x:1,
@@ -214,7 +216,7 @@ async function setupViewer(){
         .to(target, {x: -0.01, y: 0.9, z: 0.07,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
-        .to(ring.rotation,{x: Math.PI *2, y:0, z: 0,
+        .to(ring.rotation,{x: Math.PI *2 , y:0, z: -Math.PI /2,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .fromTo(colorLerpValue2, {x:0}, {x:1,
@@ -343,7 +345,7 @@ async function setupViewer(){
 
         tlExit.to(position,{x: -0.06, y: -1.15, z: 4.42, duration: 1.2, ease: "power4.out", onUpdate})
         .to(target, {x: -0.01, y: 0.9, z: 0.07, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
-        .to(ring.rotation,{x:0, y:0, z: 0}, '-=1.2')
+        .to(ring.rotation,{x: Math.PI *2 , y:0, z: -Math.PI /2,}, '-=1.2')
         .to('.footer--menu',{opacity: 0, y:'150%'}, '-=1.2')
         .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
 
@@ -364,7 +366,7 @@ async function setupViewer(){
             camView1.classList.remove('night--mode--filter')
             camView3.classList.remove('night--mode--filter')
             footerMenu.classList.remove('night--mode--filter')
-            viewer.setBackground(new Color(0xE4B9B8).convertSRGBToLinear())
+            viewer.setBackground(new Color(0xec9e9e).convertSRGBToLinear())
             nightMode = false
         }
     })
