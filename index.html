@@ -38,7 +38,7 @@
 
 <body>
 	<div class="loader">
-		<img src="assets/images/logo.png" width="80px">
+		<svg width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="a" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="9" y="3" width="32" height="42"><path d="M25 44a15 15 0 1 0 0-30 15 15 0 0 0 0 30Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="m18 8 3-4h8l3 4-7 6-7-6Z" fill="#555" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></mask><g mask="url(#a)"><path d="M0 0h48v48H0V0Z" fill="#52322B"/></g></svg>
 		<p>Loading... Please wait</p>
 		<div class="progress"></div>
 	</div>
@@ -54,7 +54,7 @@
 						<path d="M19.07 4.92999C20.9447 6.80527 21.9979 9.34835 21.9979 12C21.9979 14.6516 20.9447 17.1947 19.07 19.07M15.54 8.45999C16.4774 9.39763 17.004 10.6692 17.004 11.995C17.004 13.3208 16.4774 14.5924 15.54 15.53" stroke="#52322B" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</li>
-				<li>
+				<li class="night--mode">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M20.9999 12.79C20.8426 14.4922 20.2038 16.1144 19.1581 17.4668C18.1125 18.8192 16.7034 19.8458 15.0956 20.4265C13.4878 21.0073 11.7479 21.1181 10.0794 20.7461C8.41092 20.3741 6.8829 19.5345 5.67413 18.3258C4.46536 17.117 3.62584 15.589 3.25381 13.9205C2.88178 12.252 2.99262 10.5121 3.57336 8.9043C4.15411 7.29651 5.18073 5.88737 6.53311 4.84175C7.8855 3.79614 9.5077 3.15731 11.2099 3C10.2133 4.34827 9.73375 6.00945 9.85843 7.68141C9.98312 9.35338 10.7038 10.9251 11.8893 12.1106C13.0748 13.2961 14.6465 14.0168 16.3185 14.1415C17.9905 14.2662 19.6516 13.7866 20.9999 12.79V12.79Z" stroke="#52322B" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
@@ -87,11 +87,7 @@
 					<p>Customize your unique ring with graphic angles and pure lines that combine to create the pure beauty of the collection.</p>
 					<button tabindex="-1" class="button button-scroll">
 						Start now
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#52322B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-							<path d="M8 12L12 16L16 12" stroke="#52322B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-							<path d="M12 8V16" stroke="#52322B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
+						<svg width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23 42.2a19.2 19.2 0 1 0 0-38.4 19.2 19.2 0 0 0 0 38.4Z" stroke="#52322B" stroke-linecap="round" stroke-linejoin="round"/><path d="m15.3 23 7.7 7.7 7.7-7.7M23 15.3v15.4" stroke="#52322B" stroke-linecap="round" stroke-linejoin="round"/></svg>
 					</button>
 				</div>
 			</div>
@@ -133,7 +129,7 @@
 					<h1>Emotions</h1>
 					<p>Colorful gemstones from aquamarine, amethyst, tourmaline to diamonds come together in white gold on this luxury ring.</p>
 				</div>
-				<button class="btn-customize">
+				<button tabindex="-1" class="btn-customize">
 					Customize it
 					<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<g clip-path="url(#clip0_254_236)">
@@ -151,9 +147,47 @@
 		</div>
 	</section>
 
+	<div class="footer--container">
+		<div class="footer--menu">
+			<ul>
+				<li><img class="config--gem" alt="Config gem" width="32" height="32" src="assets/images/diamond.svg"></li>
+				<li><img class="config--material" alt="Config Material" width="32" height="32" src="assets/images/material.svg"></li>
+			</ul>
+		</div>
+		<div class="gem--menu">
+			<ul class="colors--list">
+				<li class="ruby active"><img alt="Fancy color" width="32" height="32" src="assets/images/ruby.svg"></li>
+				<li class="faint"><img alt="Fancy color" width="32" height="32" src="assets/images/faint.svg"></li>
+				<li class="fancy"><img alt="Fancy color" width="32" height="32" src="assets/images/fancy.svg"></li>
+				<li class="aqua"><img alt="Fancy color" width="32" height="32" src="assets/images/aqua.svg"></li>
+				<li class="swiss"><img alt="Fancy color" width="32" height="32" src="assets/images/swiss.svg"></li>
+				<li class="yellow"><img alt="Fancy color" width="32" height="32" src="assets/images/yellow.svg"></li>
+				<li class="orange"><img alt="Fancy color" width="32" height="32" src="assets/images/orange.svg"></li>
+				<li class="green"><img alt="Fancy color" width="32" height="32" src="assets/images/green.svg"></li>
+				<li class="emerald"><img alt="Fancy color" width="32" height="32" src="assets/images/emerald.svg"></li>
+				<li class="rose"><img alt="Fancy color" width="32" height="32" src="assets/images/rose.svg"></li>
+				<li class="violet"><img alt="Fancy color" width="32" height="32" src="assets/images/violet.svg"></li>
+				<!-- <li class="custom--color"><img alt="Fancy color" width="32" height="32" src="assets/images/custom.svg"></li> -->
+				<li class="close-gems"><svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM15 9l-6 6M9 9l6 6" stroke="#52322B" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+			</ul>
+		</div>
+		<div class="materials--menu">
+			<ul class="materials--list">
+				<li class="default active"><img alt="default color" width="60" src="assets/images/default.png"></li>
+				<li class="silver-gold"><img alt="silver-gold" width="60" src="assets/images/silver_gold.png"></li>
+				<li class="silver-silver"><img alt="Fancy color" width="60" src="assets/images/silver_silver.png"></li>
+				<li class="gold-gold"><img alt="Fancy color" width="60" src="assets/images/gold_gold.png"></li>
+				<li class="rose-silver"><img alt="Fancy color" width="60" src="assets/images/rose_silver.png"></li>
+				<li class="gold-rose"><img alt="Fancy color" width="60" src="assets/images/gold_rose.png"></li>
+				<li class="rose-rose"><img alt="Fancy color" width="60" src="assets/images/rose_rose.png"></li>
+				<li class="close-materials"><svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM15 9l-6 6M9 9l6 6" stroke="#52322B" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+			</ul>
+		</div>
+	</div>
+
 	<div class="exit--container">
-		<button class="button--secondary button--body">View body only</button>
-		<button class="button--secondary button--exit">Exit</button>
+		<h3 class="customize--title">Customize your ring</h3>
+		<button tabindex="-1" class="button--secondary button--exit">Exit</button>
 	</div>
 
 	<div id="webgi-canvas-container">
