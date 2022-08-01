@@ -66,12 +66,14 @@ async function setupViewer(){
     const camView1 =  document.querySelector('.cam-view-1') as HTMLElement
     const camView3 =  document.querySelector('.cam-view-3') as HTMLElement
     const gemMenu =  document.querySelector('.gem--menu') as HTMLElement
+    const footerContainer = document.querySelector('.footer--container') as HTMLElement
     const footerMenu =  document.querySelector('.footer--menu') as HTMLElement
     const materialsMenu = document.querySelector('.materials--menu') as HTMLElement
     const configMaterial = document.querySelector('.config--material') as HTMLElement
     const configGem = document.querySelector('.config--gem') as HTMLElement
     const closeConfigMaterial = document.querySelector('.close-materials') as HTMLElement
     const closeConfigGem = document.querySelector('.close-gems') as HTMLElement
+    const sidebar = document.querySelector('.side-bar') as HTMLElement 
     let nightMode = false
 
     // Add WEBGi plugins
@@ -156,11 +158,11 @@ async function setupViewer(){
         .to('.loader', {x: '150%', duration: 0.8, ease: "power4.inOut", delay: 1})
         .fromTo(position, {x: isMobile ? 3 : 3, y: isMobile ? -0.8 : -0.8, z: isMobile ? 1.2 : 1.2}, {x: isMobile ? 1.28 : 1.28, y: isMobile ? -1.7 : -1.7, z: isMobile ? 5.86 : 5.86, duration: 4, onUpdate}, '-=0.8')
         .fromTo(target, {x: isMobile ? 2.5 : 2.5, y: isMobile ? -0.07 : -0.07, z: isMobile ? -0.1 : -0.1}, {x: isMobile ? -0.21 : 0.91, y: isMobile ? 0.03 : 0.03, z: isMobile ? -0.25 : -0.25, duration: 4, onUpdate}, '-=4')
-        //.fromTo(position, {x: 3.6, y: -0.04, z: -3.93}, {x: -3.6, y: -0.04, z: -3.93, duration: 4, onUpdate}, '-=0.8')
-        //.fromTo(target, {x: 3.16, y: -0.13, z: 0.51}, {x: isMobile ? -0.1 : 0.86, y: -0.13, z: 0.51, duration: 4, onUpdate}, '-=4')
         .fromTo('.header--container', {opacity: 0, y: '-100%'}, {opacity: 1, y: '0%', ease: "power1.inOut", duration: 0.8}, '-=1')
         .fromTo('.hero--scroller', {opacity: 0, y: '150%'}, {opacity: 1, y: '0%', ease: "power4.inOut", duration: 1}, '-=1')
-        .fromTo('.hero--content', {opacity: 0, x: '100%'}, {opacity: 1, x: '0%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
+        .fromTo('.hero--container', {opacity: 0, x: '100%'}, {opacity: 1, x: '0%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
+        .fromTo('.side-bar', { opacity: 0, x: '50%' }, { opacity: 1, x: '0%', ease: "power4.inOut", duration: 2 }, '-=1')
+        .to('.side-bar .unique', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-1", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
     }
 
     function setupScrollAnimation(){
@@ -176,7 +178,7 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
 
-        .to(target,{x:-0.78, y: -0.03, z: -0.12,
+        .to(target,{x: isMobile ? 0 : -0.78, y: isMobile ? 1.5 : -0.03, z: -0.12,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .to(ring.rotation,{z: Math.PI /2,
@@ -197,18 +199,20 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: true, pin: '.hero--scroller--container'
         }})
 
-        .to('.hero--content', {opacity: 0, xPercent: '100', ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: true, pin: '.hero--content',
+        .to('.hero--container', {opacity: 0, xPercent: '100', ease: "power4.out",
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top top", scrub: 1, immediateRender: false,
         }})
 
         .to('.forever--text-bg', {opacity: 0.1, ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,
         }})
 
-        .fromTo('.forever--content', {opacity: 0, x: '-110%'}, {opacity: 1, x: isMobile ? '0' : '20%', ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true, pin: '.forever--container',
+        .fromTo('.forever--container', {opacity: 0, x: '-110%'}, {opacity: 1, x: isMobile ? '0' : '0%', ease: "power4.inOut",
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,
         }})
         .addLabel("Forever")
+        .to('.side-bar .unique', { opacity: 0.5, scale: 1, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
+        .to('.side-bar .forever', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
 
 
         // // EMOTIONS SECTION
@@ -233,16 +237,19 @@ async function setupViewer(){
                     }
                 }
         }})
+        .to('.forever--container', {opacity: 0, x: '-110%', ease: "power4.inOut",
+            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false
+        }})
         .to('.emotions--text-bg', {opacity: 0.1, ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
-        .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.out",
-            scrollTrigger: { trigger: ".cam-view-3", start: "top 20%", end: "top top", scrub: 1, immediateRender: false
+        .fromTo('.emotions--content', {opacity: 0, y: '130%'}, {opacity: 1, y: '0%', duration: 0.5, ease: "power4.inOut",
+            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: "top top", scrub: 1, immediateRender: false
         }})
-        .to('.forever--content', {opacity: 0, ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top center', scrub: 1, immediateRender: false
-        }})
+        
         .addLabel("Emotions")
+        .to('.side-bar .forever', { opacity: 0.5, scale: 1, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
+        .to('.side-bar .emotions', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
 
     }
 
@@ -282,6 +289,16 @@ async function setupViewer(){
         window.scrollTo({top: element?.getBoundingClientRect().top, left: 0, behavior: 'smooth'})
     })
 
+    document.querySelector('.forever')?.addEventListener('click', () => {
+        const element = document.querySelector('.cam-view-2')
+        window.scrollTo({top: element?.getBoundingClientRect().top, left: 0, behavior: 'smooth'})
+    })
+
+    document.querySelector('.hero--scroller')?.addEventListener('click', () => {
+        const element = document.querySelector('.cam-view-2')
+        window.scrollTo({top: element?.getBoundingClientRect().top, left: 0, behavior: 'smooth'})
+    })
+
     // EXPLORE ALL FEATURES EVENT
     document.querySelector('.btn-customize')?.addEventListener('click', () => {
         exploreView.style.pointerEvents = "none"
@@ -289,6 +306,8 @@ async function setupViewer(){
         canvasContainer.style.zIndex = "1"
         document.body.style.overflowY = "hidden"
         document.body.style.cursor = "grab"
+        sidebar.style.display = "none"
+        footerContainer.style.display = "flex"
         configAnimation()
         // customScrollingEnabled = false
     })
@@ -324,6 +343,9 @@ async function setupViewer(){
         canvasContainer.style.zIndex = "unset"
         document.body.style.overflowY = "auto"
         exitContainer.style.display = "none"
+        document.body.style.cursor = "auto"
+        sidebar.style.display = "block"
+        footerContainer.style.display = "none"
         exitConfigAnimation()
 
         // customScrollingEnabled = true;

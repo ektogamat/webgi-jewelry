@@ -25,14 +25,14 @@ time, mark, audio, video {
 	vertical-align: baseline;
 	overscroll-behavior: none;
 }
-
 body {
 	line-height: 1;
-	overflow-x: hidden;
-	overflow-y: hidden;
+	overflow: hidden;
+	overflow-y: scroll;
 	font-family: $archivo;
 	scroll-behavior: smooth;
 	color: $text;
+	width: 100vw;
 	&::-webkit-scrollbar {
 		display: none;
 	  }
@@ -173,6 +173,73 @@ table {
 	}
 }
 
+.side-bar {
+	position: fixed;
+	right: 60px;
+	top: 50%;
+	transform: translateY(-50%);
+  
+	z-index: 99999;
+	opacity: 0;
+	@media (max-width: 600px) {
+		display: none;
+	}
+  
+	.navigation {
+	  	ul {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+	
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+  
+			li a {
+				display: block;
+				border-radius: 50%;
+				background: $white;
+				width: 6px;
+				height: 6px;
+				margin: 8px 0;
+				cursor: pointer;
+		
+				text-indent: -999px;
+				overflow: hidden;
+		
+				position: relative;
+				opacity: 0.5;
+		
+				transition: all ease-out 250ms;
+	
+				&:after {
+					content: "";
+		
+					position: absolute;
+					bottom: 0;
+					height: 0;
+					left: 0;
+					right: 0;
+					width: 100%;
+		
+					transition: height 0.3s ease;
+				}
+	
+				&.active {
+					opacity: 1 !important;
+					transform: scale(1.5);
+				}
+	
+				&:hover::after,
+				&.active::after {
+					height: 100%;
+				}
+			}
+	  	}
+	}
+}
+
 
 /* NIGHT MODE */
 .night--mode--filter{
@@ -183,7 +250,7 @@ table {
 
 .footer--container{
 	position: fixed;
-	display: flex;
+	display: none;
 	bottom: 40px;
 	align-items: flex-end;
 	justify-content: center;
@@ -378,16 +445,21 @@ table {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	width: 100vw;
+	overflow: hidden;
 }
 
 .hero--container{
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	position: absolute;
+	position: fixed;
 	width: 50%;
-	left: 50%;
+	top: 0;
+	right: 0;
 	height: 100vh;
+	opacity: 0;
+	z-index: 2;
 	@media (max-width: 600px) {
 		align-content: center;
 		flex-direction: column;
@@ -399,10 +471,8 @@ table {
 	.hero--content{
 		width: 100%;
 		max-width: 500px;
-		position: absolute;
 		margin-right: 30%;
-		opacity: 0;
-		z-index: 2;
+		
 		@media (max-width: 600px) {
 			margin-right: 0;
 			align-items: center;
@@ -463,7 +533,7 @@ table {
 			FONT-WEIGHT: 100;
 			flex-direction: row;
 			@media (max-width: 600px) {
-				margin: 0 auto 40px;
+				margin: 0 auto 100px;
 				float: none;
 			}
 			cursor: pointer;
@@ -488,7 +558,7 @@ table {
 }
 
 .hero--scroller--container{
-	bottom: 0;
+	bottom: 30px;
 	align-items: center;
 	width: 170px;
 	align-content: center;
@@ -535,9 +605,12 @@ table {
 	align-items: center;
 	justify-content: flex-start;
 	width: 70%;
-	position: absolute;
+	position: fixed;
 	left: 0;
+	top: 0;
 	height: 100vh;
+	opacity: 0;
+	z-index: 2;
 	@media (max-width: 600px) {
 		flex-direction: column;
 		width: 100%;
@@ -549,9 +622,8 @@ table {
 	}
 	.forever--content{
 		width: 320px;
-		position: absolute;
 		margin-left: 20%;
-		opacity: 0;
+		
 		@media (max-width: 600px) {
 			margin-left: 0;
 			margin-top: 10%;
