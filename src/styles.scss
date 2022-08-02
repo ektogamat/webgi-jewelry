@@ -304,6 +304,12 @@ table {
 		opacity: 0;
 		transition: all 0.4s ease-in-out;
 		/* backdrop-filter: blur(5px); */
+		@media (max-width: 600px) {
+			width: 75%;
+			overflow-x: scroll;
+			bottom: 70px;
+			padding: 20px 30px;
+		}
 	  }
 	  
 	  .gem--menu > ul{
@@ -368,6 +374,12 @@ table {
 		opacity: 0;
 		transition: all 0.8s ease-in-out;
 		/* backdrop-filter: blur(5px); */
+		@media (max-width: 600px) {
+			width: 75%;
+			overflow-x: scroll;
+			bottom: 70px;
+			padding: 20px 30px;
+		}
 	  }
 	  
 	  .materials--menu > ul{
@@ -805,9 +817,14 @@ table {
     pointer-events: none;
 	.customize--title{
 		margin-left: 5%;
+		margin-top: -8px;
 		font-family: $qwitcher;
 		font-size: rem(40);
 		flex-grow: 0.9;
+		@media (max-width: 600px) {
+			font-size: 2rem;
+			flex-grow: 0.2;
+		}
 	}
 	svg{
 		pointer-events: auto;
@@ -831,6 +848,12 @@ table {
     text-transform: uppercase;
     pointer-events: auto;
     margin-right: 5%;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
 }
 
 .button--secondary:hover{

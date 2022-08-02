@@ -67,7 +67,6 @@ async function setupViewer(){
     const camView2 =  document.querySelector('.cam-view-2') as HTMLElement
     const camView3 =  document.querySelector('.cam-view-3') as HTMLElement
     const gemMenu =  document.querySelector('.gem--menu') as HTMLElement
-    const customizeTitle =  document.querySelector('.customize--title') as HTMLElement
     const footerContainer = document.querySelector('.footer--container') as HTMLElement
     const footerMenu =  document.querySelector('.footer--menu') as HTMLElement
     const materialsMenu = document.querySelector('.materials--menu') as HTMLElement
@@ -209,7 +208,7 @@ async function setupViewer(){
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
 
-        .fromTo('.forever--container', {opacity: 0, x: '-110%'}, {opacity: 1, x: isMobile ? '0' : '0%', ease: "power4.inOut",
+        .fromTo('.forever--container', {opacity: 0, x: '-110%'}, {opacity: 1, x: '0%', ease: "power4.inOut",
             scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
         .addLabel("Forever")
@@ -343,6 +342,8 @@ async function setupViewer(){
             camera.controls.autoRotate = true
             camera.controls.minDistance = 5
             camera.controls.maxDistance = 13
+            camera.controls.enablePan = false
+            camera.controls.screenSpacePanning = false
         }
         dof.pass!.passObject.enabled = false
 
@@ -372,6 +373,7 @@ async function setupViewer(){
             camera.controls.minDistance = 0
             camera.controls.maxDistance = Infinity
         }
+        
         dof.pass!.passObject.enabled = true
 
         gemMenu.classList.remove('show')
@@ -392,12 +394,19 @@ async function setupViewer(){
 
     // NIGHT MODE
     document.querySelector('.night--mode')?.addEventListener('click', () => {
+        toggleNightMode()
+    })
+    document.querySelector('.night--mode--2')?.addEventListener('click', () => {
+        toggleNightMode()
+    })
+
+    function toggleNightMode(){
         if(!nightMode){
             header.classList.add('night--mode--filter')
             camView1.classList.add('night--mode--filter')
             camView2.classList.add('night--mode--filter')
             camView3.classList.add('night--mode--filter')
-            customizeTitle.classList.add('night--mode--filter')
+            exitContainer.classList.add('night--mode--filter')
             footerMenu.classList.add('night--mode--filter')
             viewer.setBackground(new Color(0x22052f).convertSRGBToLinear())
             nightMode = true
@@ -406,17 +415,22 @@ async function setupViewer(){
             camView1.classList.remove('night--mode--filter')
             camView2.classList.remove('night--mode--filter')
             camView3.classList.remove('night--mode--filter')
-            customizeTitle.classList.remove('night--mode--filter')
+            exitContainer.classList.remove('night--mode--filter')
             footerMenu.classList.remove('night--mode--filter')
             viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
             nightMode = false
         }
-    })
+    }
 
     // GEM MENU
     configGem.addEventListener('click', () => {
         gemMenu.classList.add('show')
         materialsMenu.classList.remove('show')
+
+        const gemCameraAnimation = gsap.timeline()
+
+        gemCameraAnimation.to(position, {x: 1.6, y: 3.66, z: 2.55, duration: 1.5, onUpdate})
+        .to(target,{x: isMobile ? 0 : -0.01, y: isMobile ? 0.5 : 0.89, z: -0.09, duration: 1.5}, '-=1.5')
         
         if (document.querySelector('.footer--menu li.active')){
             document.querySelector('.footer--menu li.active')?.classList.remove('active')
@@ -495,6 +509,8 @@ async function setupViewer(){
     configMaterial.addEventListener('click', () => {
         materialsMenu.classList.add('show')
         gemMenu.classList.remove('show')
+        gsap.timeline().to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
+        .to(target, {x: 0, y: 0, z: 0, duration: 2.5, onUpdate}, '-=2.5')
         
         if (document.querySelector('.footer--menu li.active')){
             document.querySelector('.footer--menu li.active')?.classList.remove('active')
@@ -551,6 +567,9 @@ async function setupViewer(){
     // CLOSE GEM MENU
     closeConfigGem.addEventListener('click', () => {
         gemMenu.classList.remove('show')
+
+        gsap.timeline().to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
+        .to(target, {x: 0, y: 0, z: 0, duration: 2.5, onUpdate}, '-=2.5')
        
         if (document.querySelector('.footer--menu li.active')){
             document.querySelector('.footer--menu li.active')?.classList.remove('active')
