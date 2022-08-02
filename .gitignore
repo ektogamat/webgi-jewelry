@@ -36,3 +36,4 @@ node_modules/*
 *.code-workspace
 .vscode/sftp.json
 .history/
+.vercel
