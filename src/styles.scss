@@ -1,10 +1,5 @@
 @import "variables";
 
-/* http://meyerweb.com/eric/tools/css/reset/
-	 v2.0 | 20110126
-	 License: none (public domain)
-*/
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -69,8 +64,8 @@ table {
 	position: fixed;
 	top: 0;
 	left: 0;
-	touch-action: none
-	/* pointer-events: none; */
+	touch-action: none;
+	pointer-events: none;
 }
 
 #webgi-canvas-container{
@@ -196,17 +191,16 @@ table {
 			margin: 0;
 			padding: 0;
   
-			li a {
+			li {
 				display: block;
 				border-radius: 50%;
 				background: $white;
 				width: 6px;
 				height: 6px;
 				margin: 8px 0;
-				cursor: pointer;
-		
 				text-indent: -999px;
 				overflow: hidden;
+				pointer-events: none;
 		
 				position: relative;
 				opacity: 0.5;
@@ -803,17 +797,21 @@ table {
     display: none;
     width: 100%;
     align-content: center;
-    top: 0;
-	align-items: flex-end;
+    top: 5%;
+	align-items: center;
     justify-content: space-between;
     position: fixed;
     z-index: 3;
     pointer-events: none;
 	.customize--title{
-		margin-top: 60px;
-		margin-left: 60px;
+		margin-left: 5%;
 		font-family: $qwitcher;
 		font-size: rem(40);
+		flex-grow: 0.9;
+	}
+	svg{
+		pointer-events: auto;
+		cursor: pointer;
 	}
 }
 
@@ -832,7 +830,6 @@ table {
     border: 1px solid black;
     text-transform: uppercase;
     pointer-events: auto;
-    margin-top: 5%;
     margin-right: 5%;
 }
 

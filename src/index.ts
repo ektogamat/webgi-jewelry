@@ -1,25 +1,25 @@
 import {
     ViewerApp,
-AssetManagerPlugin,
-timeout,
-SSRPlugin,
-mobileAndTabletCheck,
-GBufferPlugin,
-ProgressivePlugin,
-TonemapPlugin,
-SSAOPlugin,
-GroundPlugin,
-FrameFadePlugin,
-DiamondPlugin,
-DepthOfFieldPlugin,
-BufferGeometry,
-MeshStandardMaterial2,
-BloomPlugin, 
-TemporalAAPlugin, 
-RandomizedDirectionalLightPlugin, 
-AssetImporter, 
-Color, 
-Mesh
+    AssetManagerPlugin,
+    timeout,
+    SSRPlugin,
+    mobileAndTabletCheck,
+    GBufferPlugin,
+    ProgressivePlugin,
+    TonemapPlugin,
+    SSAOPlugin,
+    GroundPlugin,
+    FrameFadePlugin,
+    DiamondPlugin,
+    DepthOfFieldPlugin,
+    BufferGeometry,
+    MeshStandardMaterial2,
+    BloomPlugin, 
+    TemporalAAPlugin, 
+    RandomizedDirectionalLightPlugin, 
+    AssetImporter, 
+    Color, 
+    Mesh
 } from "webgi"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -64,8 +64,10 @@ async function setupViewer(){
     const loaderElement = document.querySelector('.loader') as HTMLElement
     const header = document.querySelector('.header') as HTMLElement
     const camView1 =  document.querySelector('.cam-view-1') as HTMLElement
+    const camView2 =  document.querySelector('.cam-view-2') as HTMLElement
     const camView3 =  document.querySelector('.cam-view-3') as HTMLElement
     const gemMenu =  document.querySelector('.gem--menu') as HTMLElement
+    const customizeTitle =  document.querySelector('.customize--title') as HTMLElement
     const footerContainer = document.querySelector('.footer--container') as HTMLElement
     const footerMenu =  document.querySelector('.footer--menu') as HTMLElement
     const materialsMenu = document.querySelector('.materials--menu') as HTMLElement
@@ -137,9 +139,9 @@ async function setupViewer(){
         diamondObjects.push(o)
     }
 
-    console.log(viewer.scene.findObjectsByName('Scene')[0])
-
-    if(camera.controls) camera.controls!.enabled = false
+    if(camera.controls){
+        camera.controls!.enabled = false
+    } 
 
     // WEBGi mobile adjustments
     if(isMobile){
@@ -162,7 +164,7 @@ async function setupViewer(){
         .fromTo('.hero--scroller', {opacity: 0, y: '150%'}, {opacity: 1, y: '0%', ease: "power4.inOut", duration: 1}, '-=1')
         .fromTo('.hero--container', {opacity: 0, x: '100%'}, {opacity: 1, x: '0%', ease: "power4.inOut", duration: 1.8, onComplete: setupScrollAnimation}, '-=1')
         .fromTo('.side-bar', { opacity: 0, x: '50%' }, { opacity: 1, x: '0%', ease: "power4.inOut", duration: 2 }, '-=1')
-        .to('.side-bar .unique', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-1", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
+        .to('.side-bar .unique', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2}, '-=1')
     }
 
     function setupScrollAnimation(){
@@ -196,7 +198,7 @@ async function setupViewer(){
                 }
         }})
         .to('.hero--scroller', {opacity: 0, y: '150%',
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: true, pin: '.hero--scroller--container'
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: "top center", scrub: 1, immediateRender: false, pin: '.hero--scroller--container'
         }})
 
         .to('.hero--container', {opacity: 0, xPercent: '100', ease: "power4.out",
@@ -204,15 +206,15 @@ async function setupViewer(){
         }})
 
         .to('.forever--text-bg', {opacity: 0.1, ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
 
         .fromTo('.forever--container', {opacity: 0, x: '-110%'}, {opacity: 1, x: isMobile ? '0' : '0%', ease: "power4.inOut",
-            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,
+            scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,
         }})
         .addLabel("Forever")
-        .to('.side-bar .unique', { opacity: 0.5, scale: 1, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
-        .to('.side-bar .forever', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
+        .to('.side-bar .unique', { opacity: 0.5, scale: 1, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,}})
+        .to('.side-bar .forever', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-2", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false}})
 
 
         // // EMOTIONS SECTION
@@ -248,8 +250,8 @@ async function setupViewer(){
         }})
         
         .addLabel("Emotions")
-        .to('.side-bar .forever', { opacity: 0.5, scale: 1, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
-        .to('.side-bar .emotions', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: true,}})
+        .to('.side-bar .forever', { opacity: 0.5, scale: 1, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false,}})
+        .to('.side-bar .emotions', { opacity: 1, scale: 1.5, ease: "power4.inOut", duration: 2, scrollTrigger: { trigger: ".cam-view-3", start: "top bottom", end: 'top top', scrub: 1, immediateRender: false}})
 
     }
 
@@ -299,7 +301,7 @@ async function setupViewer(){
         window.scrollTo({top: element?.getBoundingClientRect().top, left: 0, behavior: 'smooth'})
     })
 
-    // EXPLORE ALL FEATURES EVENT
+    // CUSTOMIZE EVENT
     document.querySelector('.btn-customize')?.addEventListener('click', () => {
         exploreView.style.pointerEvents = "none"
         canvasView.style.pointerEvents = "all"
@@ -309,6 +311,14 @@ async function setupViewer(){
         sidebar.style.display = "none"
         footerContainer.style.display = "flex"
         configAnimation()
+
+        if (!musicPlay) {
+            audio.play()
+            audio.volume = 0.1
+            audio.loop = true
+            musicPlay = true
+            
+        }
         // customScrollingEnabled = false
     })
 
@@ -316,7 +326,7 @@ async function setupViewer(){
         const tlExplore = gsap.timeline()
 
         tlExplore.to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
-        .to(target, {x: 0.05, y: -0.07, z: 0.07, duration: 2.5, onUpdate}, '-=2.5')
+        .to(target, {x: 0, y: 0, z: 0, duration: 2.5, onUpdate}, '-=2.5')
         .to(ring.rotation,{x: -Math.PI /2, y:0, z: 0, duration: 2.5}, '-=2.5')
         .to('.emotions--content', {opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation}, '-=2.5')
         .fromTo('.footer--menu',{opacity: 0, y:'150%'}, {opacity: 1, y: '0%', duration: 1.5})
@@ -331,6 +341,8 @@ async function setupViewer(){
         if(camera.controls){
             camera.controls.enabled = true
             camera.controls.autoRotate = true
+            camera.controls.minDistance = 5
+            camera.controls.maxDistance = 13
         }
         dof.pass!.passObject.enabled = false
 
@@ -357,6 +369,8 @@ async function setupViewer(){
         if(camera.controls){
             camera.controls.enabled = true
             camera.controls.autoRotate = false
+            camera.controls.minDistance = 0
+            camera.controls.maxDistance = Infinity
         }
         dof.pass!.passObject.enabled = true
 
@@ -381,15 +395,18 @@ async function setupViewer(){
         if(!nightMode){
             header.classList.add('night--mode--filter')
             camView1.classList.add('night--mode--filter')
+            camView2.classList.add('night--mode--filter')
             camView3.classList.add('night--mode--filter')
-            camView3.classList.add('night--mode--filter')
+            customizeTitle.classList.add('night--mode--filter')
             footerMenu.classList.add('night--mode--filter')
             viewer.setBackground(new Color(0x22052f).convertSRGBToLinear())
             nightMode = true
         } else{
             header.classList.remove('night--mode--filter')
             camView1.classList.remove('night--mode--filter')
+            camView2.classList.remove('night--mode--filter')
             camView3.classList.remove('night--mode--filter')
+            customizeTitle.classList.remove('night--mode--filter')
             footerMenu.classList.remove('night--mode--filter')
             viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
             nightMode = false
@@ -549,6 +566,32 @@ async function setupViewer(){
         }
     })
 }
+
+/////////////////////////////////////////////////////////////////////////
+///// BACKGROUND MUSIC
+let firstPlay = true
+let audio = new Audio();
+audio.src = './assets/sounds/music_loop.mp3'
+let musicPlay = false
+function playMusic() {
+    if (!musicPlay) {
+        audio.play()
+        audio.volume = 0.1
+        audio.loop = true
+        musicPlay = true
+    } else {
+        audio.pause()
+        musicPlay = false
+    }
+}
+
+document.querySelector('.music--control')?.addEventListener('click', () => {
+    playMusic()
+})
+
+document.querySelector('.music--control--2')?.addEventListener('click', () => {
+    playMusic()
+})
 
 
 // let customScrollingEnabled = false
