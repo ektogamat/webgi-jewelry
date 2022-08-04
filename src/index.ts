@@ -22,6 +22,7 @@ import {
     Mesh
 } from "webgi"
 import gsap from "gsap"
+import { CustomMaterialConfiguratorPlugin } from "./utils/materialConfigurator"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import "./styles.scss"
 
@@ -100,6 +101,8 @@ async function setupViewer(){
     await viewer.addPlugin(DiamondPlugin)
     const dof = await viewer.addPlugin(DepthOfFieldPlugin)
     await viewer.addPlugin(RandomizedDirectionalLightPlugin, false)
+    const configurator = await viewer.addPlugin(CustomMaterialConfiguratorPlugin)
+
     viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
 
     ssr!.passes.ssr.passObject.lowQualityFrames = 0
@@ -440,70 +443,68 @@ async function setupViewer(){
 
     // DIAMOND COLORS
     document.querySelector('.ruby')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#f70db1'))
+        changeDiamondColor('ruby')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.ruby')?.classList.add('active')
     })
     document.querySelector('.faint')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#CFECEC'))
+        changeDiamondColor('faint')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.faint')?.classList.add('active')
      })
      document.querySelector('.fancy')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#a9cbe2'))
+        changeDiamondColor('fancy')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.fancy')?.classList.add('active')
      })
      
      document.querySelector('.aqua')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#62cffe'))
+        changeDiamondColor('aqua')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.aqua')?.classList.add('active')
      })
      document.querySelector('.swiss')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#76dce4'))
+        changeDiamondColor('swiss')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.swiss')?.classList.add('active')
      })
      document.querySelector('.yellow')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#efe75b'))
+        changeDiamondColor('yellow')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.yellow')?.classList.add('active')
      })
      document.querySelector('.orange')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#eb8e17'))
+        changeDiamondColor('orange')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.orange')?.classList.add('active')
      })
      document.querySelector('.green')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#17ebb5'))
+        changeDiamondColor('green')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.green')?.classList.add('active')
      })
      document.querySelector('.emerald')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#5eca00'))
+        changeDiamondColor('emerald')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.emerald')?.classList.add('active')
      })
      document.querySelector('.rose')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#fa37d7'))
+        changeDiamondColor('rose')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.rose')?.classList.add('active')
      })
      document.querySelector('.violet')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#c200f2'))
+        changeDiamondColor('violet')
         document.querySelector('.colors--list li.active')?.classList.remove('active')
         document.querySelector('.violet')?.classList.add('active')
      })
 
     // CHANGE DIAMOND COLOR
-    function changeDiamondColor(_gemColor: Color){
-        for (const o of diamondObjects) {
-            o.material.color = _gemColor
-        }
+    function changeDiamondColor(_gemColor: string){
+        configurator.setMaterial(_gemColor)
+        
         usingCustomColors = true
     }
-
 
     // MATERIALS MENU
     configMaterial.addEventListener('click', () => {
