@@ -1,3 +1,4 @@
+document.body.style.overflowY = "hidden"
 import {
     ViewerApp,
     AssetManagerPlugin,
@@ -11,7 +12,7 @@ import {
     GroundPlugin,
     FrameFadePlugin,
     DiamondPlugin,
-    DepthOfFieldPlugin,
+    // DepthOfFieldPlugin,
     BufferGeometry,
     MeshStandardMaterial2,
     BloomPlugin, 
@@ -34,6 +35,10 @@ const diamondsObjectNames = [
     'diamonds003',
     'diamonds004',
     'diamonds005',
+]
+
+const diamondsObjectNames2 = [
+    'Object'
 ]
 
 let usingCustomColors = false
@@ -73,9 +78,12 @@ async function setupViewer(){
     const configMaterial = document.querySelector('.config--material') as HTMLElement
     const configGem = document.querySelector('.config--gem') as HTMLElement
     const closeConfigMaterial = document.querySelector('.close-materials') as HTMLElement
+    const configRing = document.querySelector('.config--ring') as HTMLElement
     const closeConfigGem = document.querySelector('.close-gems') as HTMLElement
     const sidebar = document.querySelector('.side-bar') as HTMLElement 
     let nightMode = false
+    let firstLooad = true
+    let ringModel = 1
 
     // Add WEBGi plugins
     await viewer.addPlugin(GBufferPlugin)
@@ -98,7 +106,7 @@ async function setupViewer(){
     const bloom = await viewer.addPlugin(BloomPlugin)
     await viewer.addPlugin(TemporalAAPlugin,)
     await viewer.addPlugin(DiamondPlugin)
-    const dof = await viewer.addPlugin(DepthOfFieldPlugin)
+    // const dof = await viewer.addPlugin(DepthOfFieldPlugin)
     await viewer.addPlugin(RandomizedDirectionalLightPlugin, false)
     viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
 
@@ -110,7 +118,7 @@ async function setupViewer(){
     const importer = manager.importer as AssetImporter
 
     importer.addEventListener("onStart", (ev) => {
-        onUpdate()
+        // onUpdate()
     })
 
     importer.addEventListener("onProgress", (ev) => {
@@ -119,7 +127,11 @@ async function setupViewer(){
     })
 
     importer.addEventListener("onLoad", (ev) => {
-        introAnimation()
+        if(firstLooad){
+            introAnimation()
+        } else{
+            gsap.to('.loader', {x: '100%', duration: 0.8, ease: "power4.inOut", delay: 1})
+        }
     })
 
     viewer.renderer.refreshPipeline()
@@ -128,15 +140,29 @@ async function setupViewer(){
     // WEBGi load model
     await manager.addFromPath("./assets/ring_webgi.glb")
 
-    const ring = viewer.scene.findObjectsByName('Scene')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
-    const silver = viewer.scene.findObjectsByName('silver')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
-    const gold = viewer.scene.findObjectsByName('gold')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+    let ring: Mesh<BufferGeometry, MeshStandardMaterial2>, gold: Mesh<BufferGeometry, MeshStandardMaterial2>, silver: Mesh<BufferGeometry, MeshStandardMaterial2>
+    let diamondObjects: any[] = []
 
-    const diamondObjects: any[] = []
-    for (const obj of diamondsObjectNames) {
-        const o = viewer.scene.findObjectsByName(obj)[0]
-        diamondObjects.push(o)
+
+    if (ringModel == 1){
+        ring = viewer.scene.findObjectsByName('Scene')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+        silver = viewer.scene.findObjectsByName('silver')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+        gold = viewer.scene.findObjectsByName('gold')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+        for (const obj of diamondsObjectNames) {
+            const o = viewer.scene.findObjectsByName(obj)[0]
+            diamondObjects.push(o)
+        }
+    }else{
+        ring = viewer.scene.findObjectsByName('ring-compare')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+        silver = viewer.scene.findObjectsByName('alliance')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+        gold = viewer.scene.findObjectsByName('entourage')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+        for (const obj of diamondsObjectNames2) {
+            const o = viewer.scene.findObjectsByName(obj)[0]
+            diamondObjects.push(o)
+        }
+        ring.rotation.set(Math.PI/2, 0.92, 0)
     }
+
 
     if(camera.controls){
         camera.controls!.enabled = false
@@ -154,9 +180,10 @@ async function setupViewer(){
     await timeout(50)
 
     function introAnimation(){
+        firstLooad = false
         const introTL = gsap.timeline()
         introTL
-        .to('.loader', {x: '150%', duration: 0.8, ease: "power4.inOut", delay: 1})
+        .to('.loader', {x: '100%', duration: 0.8, ease: "power4.inOut", delay: 1})
         .fromTo(position, {x: isMobile ? 3 : 3, y: isMobile ? -0.8 : -0.8, z: isMobile ? 1.2 : 1.2}, {x: isMobile ? 1.28 : 1.28, y: isMobile ? -1.7 : -1.7, z: isMobile ? 5.86 : 5.86, duration: 4, onUpdate}, '-=0.8')
         .fromTo(target, {x: isMobile ? 2.5 : 2.5, y: isMobile ? -0.07 : -0.07, z: isMobile ? -0.1 : -0.1}, {x: isMobile ? -0.21 : 0.91, y: isMobile ? 0.03 : 0.03, z: isMobile ? -0.25 : -0.25, duration: 4, onUpdate}, '-=4')
         .fromTo('.header--container', {opacity: 0, y: '-100%'}, {opacity: 1, y: '0%', ease: "power1.inOut", duration: 0.8}, '-=1')
@@ -168,7 +195,7 @@ async function setupViewer(){
 
     function setupScrollAnimation(){
         document.body.style.overflowY = "scroll"
-        document.body.removeChild(loaderElement)
+        // document.body.removeChild(loaderElement)
 
         // customScrollingEnabled = true
 
@@ -182,7 +209,7 @@ async function setupViewer(){
         .to(target,{x: isMobile ? 0 : -0.78, y: isMobile ? 1.5 : -0.03, z: -0.12,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
-        .to(ring.rotation,{z: Math.PI /2,
+        .to(ring.rotation,{x: (ringModel == 1) ? 0 : -Math.PI/3, y: (ringModel == 1) ? 0 : -0.92 , z: (ringModel == 1) ? Math.PI/2 : 0,
             scrollTrigger: { trigger: ".cam-view-2",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .fromTo(colorLerpValue, {x:0}, {x:1,
@@ -224,12 +251,14 @@ async function setupViewer(){
         .to(target, {x: -0.01, y: 0.9, z: 0.07,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }, onUpdate
         })
-        .to(ring.rotation,{x: Math.PI *2 , y:0, z: -Math.PI /2,
+        .to(ring.rotation,{x: (ringModel == 1) ? 0 :0.92 , y:(ringModel == 1) ? 0 : 0.92, z: (ringModel == 1) ? -Math.PI /2 : Math.PI/3,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
         })
         .fromTo(colorLerpValue2, {x:0}, {x:1,
             scrollTrigger: { trigger: ".cam-view-3",  start: "top bottom", end: "top top", scrub: true, immediateRender: false }
             , onUpdate: function() {
+   
+                
                 if(!usingCustomColors){
                     silver.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
                     gold.material.color.lerpColors(new Color(0xd28b8b).convertSRGBToLinear(), new Color(0xf7c478).convertSRGBToLinear(), colorLerpValue2.x)
@@ -277,6 +306,7 @@ async function setupViewer(){
     // }
 
     viewer.addEventListener('preFrame', ()=>{
+        // console.log(ring.rotation)
         if(needsUpdate){
             camera.positionUpdated(false)
             camera.targetUpdated(true)
@@ -320,13 +350,14 @@ async function setupViewer(){
         }
         // customScrollingEnabled = false
     })
+    const tlExplore = gsap.timeline()
 
     function configAnimation(){
-        const tlExplore = gsap.timeline()
 
         tlExplore.to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
         .to(target, {x: 0, y: 0, z: 0, duration: 2.5, onUpdate}, '-=2.5')
-        .to(ring.rotation,{x: -Math.PI /2, y:0, z: 0, duration: 2.5}, '-=2.5')
+
+        .to(ring.rotation,{x: (ringModel == 1) ? -Math.PI/2: 0, y: 0, z: (ringModel == 1) ? -Math.PI/2 : 0, duration: 2.5}, '-=2.5')
         .to('.emotions--content', {opacity: 0, x: '130%', duration: 1.5, ease: "power4.out", onComplete: onCompleteConfigAnimation}, '-=2.5')
         .fromTo('.footer--menu',{opacity: 0, y:'150%'}, {opacity: 1, y: '0%', duration: 1.5})
 
@@ -345,7 +376,7 @@ async function setupViewer(){
             camera.controls.enablePan = false
             camera.controls.screenSpacePanning = false
         }
-        dof.pass!.passObject.enabled = false
+        // dof.pass!.passObject.enabled = false
 
     }
 
@@ -364,6 +395,8 @@ async function setupViewer(){
         // customScrollingEnabled = true;
     })
 
+    const tlExit = gsap.timeline()
+
     // EXIT EVENT
     function exitConfigAnimation(){
 
@@ -374,7 +407,7 @@ async function setupViewer(){
             camera.controls.maxDistance = Infinity
         }
         
-        dof.pass!.passObject.enabled = true
+        // dof.pass!.passObject.enabled = true
 
         gemMenu.classList.remove('show')
         materialsMenu.classList.remove('show')
@@ -382,11 +415,10 @@ async function setupViewer(){
             document.querySelector('.footer--menu li.active')?.classList.remove('active')
         }
 
-        const tlExit = gsap.timeline()
-
         tlExit.to(position,{x: -0.06, y: -1.15, z: 4.42, duration: 1.2, ease: "power4.out", onUpdate})
-        .to(target, {x: -0.01, y: 0.9, z: 0.07, duration: 1.2, ease: "power4.out", onUpdate}, '-=1.2')
-        .to(ring.rotation,{x: Math.PI *2 , y:0, z: -Math.PI /2,}, '-=1.2')
+        .to(target, {x: -0.01, y: 0.9, z: 0.07, duration: 1.2, ease: "power4.out"}, '-=1.2')
+        // .to(ring.rotation,{x: (ringModel == 1) ? 0 : Math.PI , y:0, z: 0}, '-=1.2') // funciona quando o default e 2
+        .to(ring.rotation,{x: (ringModel == 1) ? 0 : 0.92 , y: (ringModel == 1) ? 0 : 0.92, z: (ringModel == 1) ? -Math.PI/2 : Math.PI/3}, '-=1.2')
         .to('.footer--menu',{opacity: 0, y:'150%'}, '-=1.2')
         .to('.emotions--content', {opacity: 1, x: '0%', duration: 0.5, ease: "power4.out"}, '-=1.2')
 
@@ -584,7 +616,81 @@ async function setupViewer(){
             document.querySelector('.footer--menu li.active')?.classList.remove('active')
         }
     })
+
+    // CHANGE RING
+    configRing.addEventListener('click', () => {
+
+        gsap.to('.loader', {x: '0%', duration: 0.8, ease: "power4.inOut", onComplete: () =>{
+            loadNewModel()
+        }})
+           
+        if (document.querySelector('.footer--menu li.active')){
+            document.querySelector('.footer--menu li.active')?.classList.remove('active')
+        }
+    })
+
+    async function loadNewModel(){
+        if(ringModel == 1){
+            viewer.scene.removeSceneModels()
+            await manager.addFromPath("./assets/ring2_webgi.glb")
+            gsap.to('.loader', {x: '100%', duration: 0.8, ease: "power4.inOut", delay: 1})
+
+            viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
+    
+            ring = viewer.scene.findObjectsByName('Scene_1')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+            silver = viewer.scene.findObjectsByName('alliance')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+            gold = viewer.scene.findObjectsByName('entourage')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+            
+            // ring.rotation.set(Math.PI/2, 0, 0)
+            diamondObjects.length = 0
+    
+            for (const obj of diamondsObjectNames2) {
+                const o = viewer.scene.findObjectsByName(obj)[0]
+                diamondObjects.push(o)
+            }
+    
+            ringModel = 2
+            if(camera.controls){
+                camera.controls.autoRotate = true
+                camera.controls.minDistance = 5
+                camera.controls.maxDistance = 13
+                camera.controls.enablePan = false
+                camera.controls.screenSpacePanning = false
+            }
+
+
+        }else{
+            viewer.scene.removeSceneModels()
+            await manager.addFromPath("./assets/ring_webgi.glb")
+            gsap.to('.loader', {x: '100%', duration: 0.8, ease: "power4.inOut", delay: 1})
+
+            ring = viewer.scene.findObjectsByName('Scene')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+            silver = viewer.scene.findObjectsByName('silver')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+            gold = viewer.scene.findObjectsByName('gold')[0] as any as Mesh<BufferGeometry,MeshStandardMaterial2>
+
+            ring.rotation.set(-Math.PI/2, 0, 0)
+            diamondObjects.length = 0
+
+            for (const obj of diamondsObjectNames) {
+                const o = viewer.scene.findObjectsByName(obj)[0]
+                diamondObjects.push(o)
+            }
+
+            ringModel = 1
+
+            if(camera.controls){
+                camera.controls.autoRotate = true
+                camera.controls.minDistance = 5
+                camera.controls.maxDistance = 13
+                camera.controls.enablePan = false
+                camera.controls.screenSpacePanning = false
+            }
+        }
+        
+    }
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////
 ///// BACKGROUND MUSIC
@@ -611,53 +717,5 @@ document.querySelector('.music--control')?.addEventListener('click', () => {
 document.querySelector('.music--control--2')?.addEventListener('click', () => {
     playMusic()
 })
-
-
-// let customScrollingEnabled = false
-// function setupCustomWheelSmoothScrolling(viewer: ViewerApp, element: HTMLElement, snapPositions: number[], speed = 1.5){
-//     let customScrollY = element.scrollTop
-//     let frameDelta = 0
-//     let scrollVelocity = 0
-//     let lastDeltaDirection = 0
-
-//     window.addEventListener('wheel', (e: WheelEvent)=>{
-//         if(!customScrollingEnabled) return;
-//         e.preventDefault()
-//         e.stopPropagation()
-//         // todo: check delta mode?
-//         frameDelta = Math.min(Math.max(e.deltaY * speed, -window.innerHeight / 3), window.innerHeight / 3);
-//         lastDeltaDirection = Math.sign(frameDelta)
-//         return false
-//     }, {passive: false})
-
-
-//     const idleSpeedFactor = 0.0
-//     const snapSpeedFactor = 0.3
-//     const snapProximity = window.innerHeight / 5
-//     const wheelDamping = 0.25
-//     const velocityDamping = 0.1
-
-//     viewer.addEventListener('preFrame', ()=>{
-//         if(!customScrollingEnabled) return;
-//         if (Math.abs(frameDelta) < 1) {
-//             const nearestSection = snapPositions.reduce((prev, curr) => Math.abs(curr - customScrollY) < Math.abs(prev - customScrollY) ? curr : prev)
-//             let d = nearestSection - customScrollY
-//             if(Math.sign(d) !== lastDeltaDirection) d *= -1
-//             scrollVelocity = d * (Math.abs(d) < snapProximity ? snapSpeedFactor : idleSpeedFactor);
-//         }
-//         scrollVelocity += frameDelta * wheelDamping
-//         frameDelta *= (1.-wheelDamping)
-//         if (Math.abs(frameDelta) < 0.01) frameDelta = 0
-//         if (Math.abs(scrollVelocity) > 0.01) {
-//             customScrollY = Math.max(customScrollY + scrollVelocity * velocityDamping, 0)
-//             element.scrollTop = customScrollY
-//             scrollVelocity *= (1.-velocityDamping)
-//         } else {
-//             scrollVelocity = 0
-//         }
-
-//     })
-
-// }
 
 setupViewer()
