@@ -442,62 +442,19 @@ async function setupViewer(){
     })
 
     // DIAMOND COLORS
-    document.querySelector('.ruby')?.addEventListener('click', () => {
-        changeDiamondColor('ruby')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.ruby')?.classList.add('active')
-    })
-    document.querySelector('.faint')?.addEventListener('click', () => {
-        changeDiamondColor('faint')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.faint')?.classList.add('active')
-     })
-     document.querySelector('.fancy')?.addEventListener('click', () => {
-        changeDiamondColor('fancy')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.fancy')?.classList.add('active')
-     })
-     
-     document.querySelector('.aqua')?.addEventListener('click', () => {
-        changeDiamondColor('aqua')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.aqua')?.classList.add('active')
-     })
-     document.querySelector('.swiss')?.addEventListener('click', () => {
-        changeDiamondColor('swiss')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.swiss')?.classList.add('active')
-     })
-     document.querySelector('.yellow')?.addEventListener('click', () => {
-        changeDiamondColor('yellow')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.yellow')?.classList.add('active')
-     })
-     document.querySelector('.orange')?.addEventListener('click', () => {
-        changeDiamondColor('orange')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.orange')?.classList.add('active')
-     })
-     document.querySelector('.green')?.addEventListener('click', () => {
-        changeDiamondColor('green')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.green')?.classList.add('active')
-     })
-     document.querySelector('.emerald')?.addEventListener('click', () => {
-        changeDiamondColor('emerald')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.emerald')?.classList.add('active')
-     })
-     document.querySelector('.rose')?.addEventListener('click', () => {
-        changeDiamondColor('rose')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.rose')?.classList.add('active')
-     })
-     document.querySelector('.violet')?.addEventListener('click', () => {
-        changeDiamondColor('violet')
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.violet')?.classList.add('active')
-     })
+    var colorsList = document.getElementById("colors--list")?.getElementsByTagName("li");
+
+    if(colorsList){
+        for (let i = 0; i < colorsList.length; i++) {
+            const el = colorsList[i];
+
+            el.addEventListener('click', () => {
+                changeDiamondColor(el.classList[0]) //Change color to class name preset
+                document.querySelector('.colors--list li.active')?.classList.remove('active')
+                el.classList.add('active')
+            })
+        }
+    }
 
     // CHANGE DIAMOND COLOR
     function changeDiamondColor(_gemColor: string){
@@ -520,43 +477,69 @@ async function setupViewer(){
     })
 
     // MATERIALS COLOR
-    document.querySelector('.default')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfea04d),new Color(0xffffff))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.default')?.classList.add('active')
-     })
-    document.querySelector('.silver-gold')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xffffff), new Color(0xfea04d))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.silver-gold')?.classList.add('active')
-     })
+    var matList = document.getElementById("materials--list")?.getElementsByTagName("li");
+
+    if(matList){
+        const matColors = {
+            default: [new Color(0xfea04d), new Color(0xffffff)],
+            silver_gold: [new Color(0xffffff), new Color(0xfea04d)],
+            silver_silver: [new Color(0xffffff), new Color(0xffffff)],
+            gold_gold: [new Color(0xfea04d), new Color(0xfea04d)],
+            rose_silver: [new Color(0xfa8787), new Color(0xffffff)],
+            gold_rose: [new Color(0xfea04d), new Color(0xfa8787)],
+            rose_rose: [new Color(0xfa8787), new Color(0xfa8787)]
+        }
+
+        for (let i = 0; i < matList.length; i++) {
+            const el = matList[i];
+            const elColor: (keyof typeof matColors) = el.classList[0]
+
+            if(el.className !== 'close-materials')
+                el.addEventListener('click', () => {
+                    changeMaterialColor(matColors[elColor][0], matColors[elColor][1]) //Change color to class name preset
+                    document.querySelector('.materials--list li.active')?.classList.remove('active')
+                    el.classList.add('active')
+                })
+        }
+    }
+
+    // document.querySelector('.default')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xfea04d),new Color(0xffffff))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.default')?.classList.add('active')
+    //  })
+    // document.querySelector('.silver_gold')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xffffff), new Color(0xfea04d))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.silver_gold')?.classList.add('active')
+    //  })
      
-    document.querySelector('.silver-silver')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xffffff), new Color(0xffffff))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.silver-silver')?.classList.add('active')
-     })
+    // document.querySelector('.silver_silver')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xffffff), new Color(0xffffff))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.silver_silver')?.classList.add('active')
+    //  })
     
-    document.querySelector('.gold-gold')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfea04d), new Color(0xfea04d))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.gold-gold')?.classList.add('active')
-     })
-    document.querySelector('.rose-silver')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfa8787), new Color(0xffffff))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.rose-silver')?.classList.add('active')
-    })
-    document.querySelector('.gold-rose')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfea04d), new Color(0xfa8787))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.gold-rose')?.classList.add('active')
-    })
-    document.querySelector('.rose-rose')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfa8787), new Color(0xfa8787))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.rose-rose')?.classList.add('active')
-    })
+    // document.querySelector('.gold_gold')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xfea04d), new Color(0xfea04d))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.gold_gold')?.classList.add('active')
+    //  })
+    // document.querySelector('.rose_silver')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xfa8787), new Color(0xffffff))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.rose_silver')?.classList.add('active')
+    // })
+    // document.querySelector('.gold_rose')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xfea04d), new Color(0xfa8787))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.gold_rose')?.classList.add('active')
+    // })
+    // document.querySelector('.rose_rose')?.addEventListener('click', () => {
+    //     changeMaterialColor(new Color(0xfa8787), new Color(0xfa8787))
+    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
+    //     document.querySelector('.rose_rose')?.classList.add('active')
+    // })
 
     // CHANGE MATERIAL COLOR
     function changeMaterialColor(_firstColor: Color, _secondColoor: Color){
