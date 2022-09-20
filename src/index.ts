@@ -262,23 +262,6 @@ async function setupViewer(){
         needsUpdate = true;
     }
 
-    // if(!isMobile){
-    //     const sections = document.querySelectorAll('.section')
-    //     const sectionTops: number[] = []
-    //     sections.forEach(section=> {
-    //         sectionTops.push(section.getBoundingClientRect().top)
-    //     })
-    //     setupCustomWheelSmoothScrolling(viewer, document.documentElement, sectionTops, )
-    // }
-    // else {
-    //     createStyles(`
-    //         .section-wrapper {
-    //         scroll-snap-type: y mandatory;
-    //         }
-
-    //     `)
-    // }
-
     viewer.addEventListener('preFrame', ()=>{
         if(needsUpdate){
             camera.positionUpdated(false)
@@ -503,44 +486,6 @@ async function setupViewer(){
         }
     }
 
-    // document.querySelector('.default')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xfea04d),new Color(0xffffff))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.default')?.classList.add('active')
-    //  })
-    // document.querySelector('.silver_gold')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xffffff), new Color(0xfea04d))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.silver_gold')?.classList.add('active')
-    //  })
-     
-    // document.querySelector('.silver_silver')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xffffff), new Color(0xffffff))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.silver_silver')?.classList.add('active')
-    //  })
-    
-    // document.querySelector('.gold_gold')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xfea04d), new Color(0xfea04d))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.gold_gold')?.classList.add('active')
-    //  })
-    // document.querySelector('.rose_silver')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xfa8787), new Color(0xffffff))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.rose_silver')?.classList.add('active')
-    // })
-    // document.querySelector('.gold_rose')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xfea04d), new Color(0xfa8787))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.gold_rose')?.classList.add('active')
-    // })
-    // document.querySelector('.rose_rose')?.addEventListener('click', () => {
-    //     changeMaterialColor(new Color(0xfa8787), new Color(0xfa8787))
-    //     document.querySelector('.materials--list li.active')?.classList.remove('active')
-    //     document.querySelector('.rose_rose')?.classList.add('active')
-    // })
-
     // CHANGE MATERIAL COLOR
     function changeMaterialColor(_firstColor: Color, _secondColoor: Color){
         silver.material.color = _firstColor
@@ -595,53 +540,5 @@ document.querySelector('.music--control')?.addEventListener('click', () => {
 document.querySelector('.music--control--2')?.addEventListener('click', () => {
     playMusic()
 })
-
-
-// let customScrollingEnabled = false
-// function setupCustomWheelSmoothScrolling(viewer: ViewerApp, element: HTMLElement, snapPositions: number[], speed = 1.5){
-//     let customScrollY = element.scrollTop
-//     let frameDelta = 0
-//     let scrollVelocity = 0
-//     let lastDeltaDirection = 0
-
-//     window.addEventListener('wheel', (e: WheelEvent)=>{
-//         if(!customScrollingEnabled) return;
-//         e.preventDefault()
-//         e.stopPropagation()
-//         // todo: check delta mode?
-//         frameDelta = Math.min(Math.max(e.deltaY * speed, -window.innerHeight / 3), window.innerHeight / 3);
-//         lastDeltaDirection = Math.sign(frameDelta)
-//         return false
-//     }, {passive: false})
-
-
-//     const idleSpeedFactor = 0.0
-//     const snapSpeedFactor = 0.3
-//     const snapProximity = window.innerHeight / 5
-//     const wheelDamping = 0.25
-//     const velocityDamping = 0.1
-
-//     viewer.addEventListener('preFrame', ()=>{
-//         if(!customScrollingEnabled) return;
-//         if (Math.abs(frameDelta) < 1) {
-//             const nearestSection = snapPositions.reduce((prev, curr) => Math.abs(curr - customScrollY) < Math.abs(prev - customScrollY) ? curr : prev)
-//             let d = nearestSection - customScrollY
-//             if(Math.sign(d) !== lastDeltaDirection) d *= -1
-//             scrollVelocity = d * (Math.abs(d) < snapProximity ? snapSpeedFactor : idleSpeedFactor);
-//         }
-//         scrollVelocity += frameDelta * wheelDamping
-//         frameDelta *= (1.-wheelDamping)
-//         if (Math.abs(frameDelta) < 0.01) frameDelta = 0
-//         if (Math.abs(scrollVelocity) > 0.01) {
-//             customScrollY = Math.max(customScrollY + scrollVelocity * velocityDamping, 0)
-//             element.scrollTop = customScrollY
-//             scrollVelocity *= (1.-velocityDamping)
-//         } else {
-//             scrollVelocity = 0
-//         }
-
-//     })
-
-// }
 
 setupViewer()
