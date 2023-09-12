@@ -33,6 +33,7 @@
     ]
   },
   "dependencies": {
+    "@studio-freight/lenis": "^0.2.24",
     "gsap": "^3.10.4",
     "vercel": "^27.2.0"
   }

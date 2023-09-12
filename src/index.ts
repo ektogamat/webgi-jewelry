@@ -24,9 +24,26 @@ import {
 } from "webgi"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Lenis from '@studio-freight/lenis'
+
 import "./styles.scss"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const lenis = new Lenis({
+    duration: 2.2,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -5 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    mouseMultiplier: 1,
+  })
+  
+function raf(time: Number) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+}
+  
+requestAnimationFrame(raf)
 
 const diamondsObjectNames = [
     'diamonds',
@@ -353,6 +370,7 @@ async function setupViewer(){
     const tlExplore = gsap.timeline()
 
     function configAnimation(){
+        lenis.stop()
 
         tlExplore.to(position,{x: -0.17, y: -0.25, z: 8.5, duration: 2.5, onUpdate})
         .to(target, {x: 0, y: 0, z: 0, duration: 2.5, onUpdate}, '-=2.5')
@@ -406,6 +424,8 @@ async function setupViewer(){
             camera.controls.minDistance = 0
             camera.controls.maxDistance = Infinity
         }
+
+        lenis.start()
         
         // dof.pass!.passObject.enabled = true
 

@@ -25,7 +25,7 @@ body {
 	overflow: hidden;
 	overflow-y: scroll;
 	font-family: $archivo;
-	scroll-behavior: smooth;
+	scroll-behavior: initial;
 	color: $text;
 	width: 100vw;
 	&::-webkit-scrollbar {
@@ -132,10 +132,20 @@ table {
 			-webkit-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
+
+			span{
+				font-size: rem(14);
+				padding-left: 10px;
+
+				a{
+					text-decoration: none;
+					color: $text;
+				}
+			}
 		}
 		.header--menu {
 			display: inline-flex;
-			gap: 1em;
+			gap: 0.2em;
 			align-items: center;
 			@media (max-width: 600px) {
 				display: none;
@@ -164,6 +174,17 @@ table {
 					}
 				}
 			}
+			.know--more a{
+				font-size: rem(13);
+				text-decoration: none;
+				color: $text;
+				transition: all .4s ease-in-out;
+
+				&:hover{
+					text-decoration: underline;
+				}
+			}
+			
 		}
 	}
 }
@@ -824,6 +845,13 @@ table {
 		@media (max-width: 600px) {
 			font-size: 2rem;
 			flex-grow: 0.2;
+		}
+	}
+	.copyright{
+		font-size: 12px;
+		margin-right: 40px;
+		@media (max-width: 600px) {
+			display: none;
 		}
 	}
 	svg{
