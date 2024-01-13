@@ -23,6 +23,7 @@ import {
     Mesh
 } from "webgi"
 import gsap from "gsap"
+import { CustomMaterialConfiguratorPlugin } from "./utils/materialConfigurator"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Lenis from '@studio-freight/lenis'
 
@@ -125,6 +126,8 @@ async function setupViewer(){
     await viewer.addPlugin(DiamondPlugin)
     // const dof = await viewer.addPlugin(DepthOfFieldPlugin)
     await viewer.addPlugin(RandomizedDirectionalLightPlugin, false)
+    const configurator = await viewer.addPlugin(CustomMaterialConfiguratorPlugin)
+
     viewer.setBackground(new Color('#EEB7B5').convertSRGBToLinear())
 
     ssr!.passes.ssr.passObject.lowQualityFrames = 0
@@ -305,23 +308,6 @@ async function setupViewer(){
         needsUpdate = true;
     }
 
-    // if(!isMobile){
-    //     const sections = document.querySelectorAll('.section')
-    //     const sectionTops: number[] = []
-    //     sections.forEach(section=> {
-    //         sectionTops.push(section.getBoundingClientRect().top)
-    //     })
-    //     setupCustomWheelSmoothScrolling(viewer, document.documentElement, sectionTops, )
-    // }
-    // else {
-    //     createStyles(`
-    //         .section-wrapper {
-    //         scroll-snap-type: y mandatory;
-    //         }
-
-    //     `)
-    // }
-
     viewer.addEventListener('preFrame', ()=>{
         // console.log(ring.rotation)
         if(needsUpdate){
@@ -491,71 +477,26 @@ async function setupViewer(){
     })
 
     // DIAMOND COLORS
-    document.querySelector('.ruby')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#f70db1'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.ruby')?.classList.add('active')
-    })
-    document.querySelector('.faint')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#CFECEC'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.faint')?.classList.add('active')
-     })
-     document.querySelector('.fancy')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#a9cbe2'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.fancy')?.classList.add('active')
-     })
-     
-     document.querySelector('.aqua')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#62cffe'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.aqua')?.classList.add('active')
-     })
-     document.querySelector('.swiss')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#76dce4'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.swiss')?.classList.add('active')
-     })
-     document.querySelector('.yellow')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#efe75b'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.yellow')?.classList.add('active')
-     })
-     document.querySelector('.orange')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#eb8e17'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.orange')?.classList.add('active')
-     })
-     document.querySelector('.green')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#17ebb5'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.green')?.classList.add('active')
-     })
-     document.querySelector('.emerald')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#5eca00'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.emerald')?.classList.add('active')
-     })
-     document.querySelector('.rose')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#fa37d7'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.rose')?.classList.add('active')
-     })
-     document.querySelector('.violet')?.addEventListener('click', () => {
-        changeDiamondColor(new Color('#c200f2'))
-        document.querySelector('.colors--list li.active')?.classList.remove('active')
-        document.querySelector('.violet')?.classList.add('active')
-     })
+    var colorsList = document.getElementById("colors--list")?.getElementsByTagName("li");
 
-    // CHANGE DIAMOND COLOR
-    function changeDiamondColor(_gemColor: Color){
-        for (const o of diamondObjects) {
-            o.material.color = _gemColor
+    if(colorsList){
+        for (let i = 0; i < colorsList.length; i++) {
+            const el = colorsList[i];
+
+            el.addEventListener('click', () => {
+                changeDiamondColor(el.classList[0]) //Change color to class name preset
+                document.querySelector('.colors--list li.active')?.classList.remove('active')
+                el.classList.add('active')
+            })
         }
-        usingCustomColors = true
     }
 
+    // CHANGE DIAMOND COLOR
+    function changeDiamondColor(_gemColor: string){
+        configurator.setMaterial(_gemColor)
+        
+        usingCustomColors = true
+    }
 
     // MATERIALS MENU
     configMaterial.addEventListener('click', () => {
@@ -571,43 +512,31 @@ async function setupViewer(){
     })
 
     // MATERIALS COLOR
-    document.querySelector('.default')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfea04d),new Color(0xffffff))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.default')?.classList.add('active')
-     })
-    document.querySelector('.silver-gold')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xffffff), new Color(0xfea04d))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.silver-gold')?.classList.add('active')
-     })
-     
-    document.querySelector('.silver-silver')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xffffff), new Color(0xffffff))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.silver-silver')?.classList.add('active')
-     })
-    
-    document.querySelector('.gold-gold')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfea04d), new Color(0xfea04d))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.gold-gold')?.classList.add('active')
-     })
-    document.querySelector('.rose-silver')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfa8787), new Color(0xffffff))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.rose-silver')?.classList.add('active')
-    })
-    document.querySelector('.gold-rose')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfea04d), new Color(0xfa8787))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.gold-rose')?.classList.add('active')
-    })
-    document.querySelector('.rose-rose')?.addEventListener('click', () => {
-        changeMaterialColor(new Color(0xfa8787), new Color(0xfa8787))
-        document.querySelector('.materials--list li.active')?.classList.remove('active')
-        document.querySelector('.rose-rose')?.classList.add('active')
-    })
+    var matList = document.getElementById("materials--list")?.getElementsByTagName("li");
+
+    if(matList){
+        const matColors = {
+            default: [new Color(0xfea04d), new Color(0xffffff)],
+            silver_gold: [new Color(0xffffff), new Color(0xfea04d)],
+            silver_silver: [new Color(0xffffff), new Color(0xffffff)],
+            gold_gold: [new Color(0xfea04d), new Color(0xfea04d)],
+            rose_silver: [new Color(0xfa8787), new Color(0xffffff)],
+            gold_rose: [new Color(0xfea04d), new Color(0xfa8787)],
+            rose_rose: [new Color(0xfa8787), new Color(0xfa8787)]
+        }
+
+        for (let i = 0; i < matList.length; i++) {
+            const el = matList[i];
+            const elColor: (keyof typeof matColors) = el.classList[0]
+
+            if(el.className !== 'close-materials')
+                el.addEventListener('click', () => {
+                    changeMaterialColor(matColors[elColor][0], matColors[elColor][1]) //Change color to class name preset
+                    document.querySelector('.materials--list li.active')?.classList.remove('active')
+                    el.classList.add('active')
+                })
+        }
+    }
 
     // CHANGE MATERIAL COLOR
     function changeMaterialColor(_firstColor: Color, _secondColoor: Color){
